@@ -3,7 +3,10 @@
 // Le testbench génère des images 
 
 `include "vga_pkg.sv"
-
+//if using standard clock (all verification is done at negedge)
+//`define EDGE negedge 
+//if using inverted clock (all verification is done at posedge)
+`define EDGE posedge 
 import vga_pkg::*;
 
 class screendump #(X=640,Y=480);
@@ -92,9 +95,9 @@ fork
 		@(negedge vga_ifs.VGA_VS);
 		row_count=0;
 		frame_count++;
-        $display("dump de l'image :%d",frame_count) ;
+        	$display("dump de l'image :%d",frame_count) ;
 		dump.write_buf_to_file();
-        @(posedge vga_ifs.VGA_VS);
+        	@(posedge vga_ifs.VGA_VS);
         INTERNAL_CHECK_ENABLE = 1;
 	end
 	forever begin
@@ -103,7 +106,7 @@ fork
 		if (in_vdisp) row_count++;
 	end
 	forever begin 
-		@(posedge vga_ifs.VGA_CLK);
+		@(`EDGE vga_ifs.VGA_CLK);
 		if(in_vdisp && vga_ifs.VGA_BLANK) begin
 			dump.modify(vga_ifs.VGA_R,vga_ifs.VGA_G,vga_ifs.VGA_B,column_count,row_count);
 			column_count++;
@@ -114,28 +117,28 @@ end
 //-------horizontal timing is easy-------------------
 
 property hdisp;
-	@(negedge vga_ifs.VGA_CLK) 
+	@(`EDGE vga_ifs.VGA_CLK) 
 	if(!(in_vfp||in_vbp||in_vp))
 	if(INTERNAL_CHECK_ENABLE)
 	$rose(vga_ifs.VGA_BLANK) |-> ##HDISP $fell(vga_ifs.VGA_BLANK);
 endproperty
 
 property hfp;
-	@(negedge vga_ifs.VGA_CLK) 
+	@(`EDGE vga_ifs.VGA_CLK) 
 	if(!(in_vfp||in_vbp||in_vp))
 	if(INTERNAL_CHECK_ENABLE)
 	($fell(vga_ifs.VGA_BLANK)) |-> ##HFP $fell(vga_ifs.VGA_HS);
 endproperty
 
 property hp;
-	@(negedge vga_ifs.VGA_CLK) 
+	@(`EDGE vga_ifs.VGA_CLK) 
 	if(!(in_vfp||in_vbp||in_vp))
 	if(INTERNAL_CHECK_ENABLE)
 	$fell(vga_ifs.VGA_HS) |-> ##HPULSE $rose(vga_ifs.VGA_HS);
 endproperty
 
 property hbp;
-	@(negedge vga_ifs.VGA_CLK) 
+	@(`EDGE vga_ifs.VGA_CLK) 
 	if(!(in_vfp||in_vbp||in_vp))
 	//if(tb_fpga.fpga0.vga0.vga_enable)
 	if(INTERNAL_CHECK_ENABLE)
@@ -156,7 +159,7 @@ sequence s_vp;
 endsequence
 
 property vp;
-	@(negedge vga_ifs.VGA_CLK) 
+	@(`EDGE vga_ifs.VGA_CLK) 
  	s_vp |=> (first_match($rose(vga_ifs.VGA_VS)[->1])) ;	
 	//we have to do this because only local vairables can be assigned within a sequence match,
 	// but function calls are ok. in_vp=1, not_ok, f_in_vp(1) ok. why ?
@@ -171,14 +174,14 @@ sequence s_vbp_1;
 endsequence
 
 property vbp_1;
-	@(negedge vga_ifs.VGA_CLK) 
+	@(`EDGE vga_ifs.VGA_CLK) 
 	//if(tb_fpga.fpga0.vga0.vga_enable)
 	if(INTERNAL_CHECK_ENABLE)
 	($rose(vga_ifs.VGA_VS),f_in_vbp(1)) |-> (!vga_ifs.VGA_BLANK within s_vbp);
 endproperty
 
 property vbp;
-	@(negedge vga_ifs.VGA_CLK) 
+	@(`EDGE vga_ifs.VGA_CLK) 
 	if(INTERNAL_CHECK_ENABLE)
 	//s_vbp |-> ($rose(vga_ifs.VGA_BLANK)[->1],f_in_vbp(0));
 	($rose(vga_ifs.VGA_VS),f_in_vbp(1)) |-> s_vbp;
@@ -189,7 +192,7 @@ sequence s_vdisp;
 endsequence
 
 property vdisp;
-	@(negedge vga_ifs.VGA_CLK) 
+	@(`EDGE vga_ifs.VGA_CLK) 
 	//if(tb_fpga.fpga0.vga0.vga_enable)
 	if(INTERNAL_CHECK_ENABLE)
 	($rose(vga_ifs.VGA_VS)) |-> (s_vbp,f_in_vdisp(1)) |-> (s_vdisp,f_in_vdisp(0));
@@ -200,7 +203,7 @@ sequence s_vfp;
 endsequence
 
 property vfp;
-	@(negedge vga_ifs.VGA_CLK) 
+	@(`EDGE vga_ifs.VGA_CLK) 
 	//if(tb_fpga.fpga0.vga0.vga_enable)
 	if(INTERNAL_CHECK_ENABLE)
 	($rose(vga_ifs.VGA_VS)) |-> (s_vbp) |-> (s_vdisp,f_in_vfp(1)) |->(s_vfp,f_in_vfp(0));
