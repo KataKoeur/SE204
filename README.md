@@ -1,3 +1,5 @@
-# My new project
+# SE204 Dépot Git
 
-This is the default README.md. Please edit me.
+Bienvenue sur le gitLab de Erwan CHERIAUX !
+
+23/09/2016: ExoSim, simulation d'un compteur cadencé par une bascule.
