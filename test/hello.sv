@@ -7,3 +7,16 @@ begin
 end
 
 endmodule
+
+
+module mux21(
+	input s,
+	input a, b,
+	output logic o
+	);
+
+always@(s,a,b)
+	if(s) o<=a;
+	else  o<=b;
+
+endmodule
