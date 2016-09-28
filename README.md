@@ -11,3 +11,5 @@ Bienvenue sur le gitLab de Erwan CHERIAUX !
 
 Actuellement, je ne parviens pas réaliser la simulation de MCE, ModelSim se lance et j'observe les
 signaux A, B, MAX et MIN avec aucun signe de vie...
+
+Ajout d'un Makefile capable de synthétiser les modules et de renseigner l'optimalité du code.
