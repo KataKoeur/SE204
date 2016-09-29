@@ -9,7 +9,7 @@ module MCE_testbench;  // Un environnement de simulation n'a ni entrées ni
                        // sera modifiée par un bloc "always" ou
                        // "initial".
 
-  MCE dut(.A(A), .B(B), .MAX(MAX), .MIN(MIN)); // On instancie le module a tester.
+  MCE I_MCE(.A(A), .B(B), .MAX(MAX), .MIN(MIN)); // On instancie le module a tester.
 
   initial begin: ENTREES // Ici tout est géré par un seul bloc "initial"
                          // que l'on nomme pour pouvoir y déclarer des
