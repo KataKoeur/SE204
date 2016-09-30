@@ -1,9 +1,9 @@
 module MED #(parameter SIZE = 8, NB_PIXEL = 9)(
-        input [SIZE-1:0]DI,
+        input logic [SIZE-1:0]DI,
         input logic DSI,
         input logic BYP,
         input logic CLK,
-        output [SIZE-1:0]DO
+        output logic [SIZE-1:0]DO
         );
 
 integer i;
@@ -26,10 +26,12 @@ if (BYP) registre[NB_PIXEL-1] <= registre[NB_PIXEL-2];
 else 	 registre[NB_PIXEL-1] <= MAX;
 
 //Gestion de l'entrée DSI
-assign registre[0] = (DSI)? DI: MIN;
+always@(*)
+registre[0] <= (DSI)? DI: MIN;
 
 //Gestion de la sortie DO
-assign DO = registre[NB_PIXEL-1];
+always@(*)
+DO <= registre[NB_PIXEL-1];
 
 endmodule
 
