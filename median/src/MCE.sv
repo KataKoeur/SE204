@@ -5,7 +5,6 @@ module MCE #(parameter SIZE = 8)(
 	output [SIZE-1:0]MIN
 	);
 
-assign MAX = (A>B)?A:B;
-assign MIN = (A<B)?A:B;
+assign {MAX,MIN} = (A>B)?{A,B}:{B,A};
 
 endmodule

@@ -13,5 +13,4 @@ La simulation sur ModelSim renvoie un message de confirmation du bon fonctionnem
 IMPORTANT: Il faut compiler le fichier testbench.sv avant de réaliser la simulation.
 
 Ajout d'un Makefile capable de synthétiser les modules et de renseigner l'optimalité du code.
-La synthèse du module MCE indique 32 LUTs, ce qui est sous optimal ! Il faudrait avoir 24 LUTs 
-tout au plus. Néanmoins, je ne vois pas comment améliorer le code du module MCE.
+La synthèse du module MCE indique bien 24 LUTs, ce qui est conforme à l'optimalité attendu.

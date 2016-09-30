@@ -1,0 +1,8 @@
+median/simulation/*
+median/synthese/*/*
+*/work/*
+*.psp
+*.log
+*.wlf
+transcript
+
