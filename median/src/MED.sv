@@ -15,7 +15,7 @@ MCE #(.SIZE(SIZE)) dut(.A(registre[NB_PIXEL-1]), .B(registre[NB_PIXEL-2]), .MAX(
 
 //registre à décalage de R0 à R7
 always@(posedge CLK)
-for (i=0;i<=NB_PIXEL-3;i=i+1) 
+for (i=0;i<=NB_PIXEL-3;i=i+1)
 begin
 	registre[i+1] <= registre[i];
 end
