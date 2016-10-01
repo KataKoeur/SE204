@@ -24,4 +24,4 @@ peu mais optimale. Le schéma RTL correspond à ce que l'on attend. Le slack vau
 
 	Module MEDIAN:		Exploite le module MED via un algo adapté à 9 pixels
 
-Le module MEDIAN compile, il faut maintenant le simuler pour verifier son bon fonctionnement
+Le module MEDIAN compile. La simulation ne se lance pas du à une erreur.

@@ -1,4 +1,4 @@
-module MED #(parameter SIZE = 8)(
+module MEDIAN #(parameter SIZE = 8)(
         input logic [SIZE-1:0]DI,
         input logic DSI,
         input logic nRST,
