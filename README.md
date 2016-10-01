@@ -21,3 +21,7 @@ La synthèse du module MCE indique bien 24 LUTs, ce qui est conforme à l'optima
 Le module MED est terminé et a passé la phase de simulation avec succes.
 La synthétisation du module MED nous informe que le code utilise 25 LUTs ce qui me semble 
 peu mais optimale. Le schéma RTL correspond à ce que l'on attend. Le slack vaut 16.254ns sur 20ns.
+
+	Module MEDIAN:		Exploite le module MED via un algo adapté à 9 pixels
+
+Le module MEDIAN compile, il faut maintenant le simuler pour verifier son bon fonctionnement
