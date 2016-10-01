@@ -17,4 +17,5 @@ La synthèse du module MCE indique bien 24 LUTs, ce qui est conforme à l'optima
 
 	Module MED: 		Récupere n pixel et renvoie la médiane
 
-Première ébauche, le code compile mais n'ai pas complet pour réalisé ce que l'on souhaite.
+Le module MED est terminé et a passé la phase de simulation avec succes.
+Il faut maintenant le synthétiser.

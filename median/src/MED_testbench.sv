@@ -30,6 +30,7 @@ module MED_testbench;  // Un environnement de simulation n'a ni entrees ni
 
     CLK = 1'b0; // On initialise l'horloge a 0 en debut de simulation.
     DSI = 1'b0; // On initialise DSI a 0 en debut de simulation.
+    BYP = 1'b0; // On initialise BYP a 0 en debut de simulation.
     repeat (1000) begin                   // Nous allons simuler 1000
                                           // vecteurs.
       @(posedge CLK); // On attend un front montant de CLK.

@@ -8,7 +8,7 @@ module MED #(parameter SIZE = 8, NB_PIXEL = 9)(
 
 integer i;
 logic [SIZE-1:0] registre [0:NB_PIXEL-1];
-wire  [SIZE-1:0] MAX, MIN;
+logic [SIZE-1:0] MAX, MIN;
 
 //Module MCE
 MCE #(.SIZE(SIZE)) dut(.A(registre[NB_PIXEL-1]), .B(registre[NB_PIXEL-2]), .MAX(MAX), .MIN(MIN));
@@ -26,7 +26,7 @@ if (BYP) registre[NB_PIXEL-1] <= registre[NB_PIXEL-2];
 else 	 registre[NB_PIXEL-1] <= MAX;
 
 //Gestion de l'entrée DSI
-always@(*)
+always@(posedge CLK)
 registre[0] <= (DSI)? DI: MIN;
 
 //Gestion de la sortie DO
