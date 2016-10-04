@@ -15,7 +15,7 @@ MED I_MED(.DI(DI), .DSI(DSI), .BYP(BYP), .CLK(CLK), .DO(DO));
 
 //Gestion de la sortie DSO
 always@(*)
-DSO = (cpt>=40);
+DSO = (cpt>40);
 
 //Le compteur s'incrémente à chaque coup d'horloge
 //et permet de faire avancer l'automate
@@ -33,7 +33,6 @@ else
                 begin
                 cpt <= 0;
                 DSO <= 0;
-                BYP <= 0;
                 end
         else    //Tous les pixels sont présent, Lancement de l'algo
                 begin
@@ -43,16 +42,18 @@ else
 
 //Machine à état
 always@(*)
-case (cpt)
-	6'd0   : BYP = 0;
-	6'd9   : BYP = 1;
-	6'd10  : BYP = 0;
-	6'd17  : BYP = 1;
-	6'd19  : BYP = 0;
-	6'd25  : BYP = 1;
-	6'd28  : BYP = 0;
-	6'd33  : BYP = 1;
-	6'd37  : BYP = 0;
-endcase
+if(DSI)	BYP <= 1;
+else
+	case (cpt)
+		6'd0   : BYP = 0;
+		6'd9   : BYP = 1;
+		6'd10  : BYP = 0;
+		6'd17  : BYP = 1;
+		6'd19  : BYP = 0;
+		6'd25  : BYP = 1;
+		6'd28  : BYP = 0;
+		6'd33  : BYP = 1;
+		6'd37  : BYP = 0;
+	endcase
 
 endmodule

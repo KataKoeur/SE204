@@ -34,15 +34,3 @@ always@(*)
 DO <= registre[NB_PIXEL-1];
 
 endmodule
-
-/*
-for iter in 0 ... PixNum/2
-begin
-  for pix_idx in 1 ... PixNum-iter-1
-  begin
-    if (V[0] < V[pix_idx])  Exchange(V[0],V[pix_idx])
-  end
-  med = V[0]
-  V[0:PixNum-1] = {V[1:PixNum-1],0}
-end
-*/

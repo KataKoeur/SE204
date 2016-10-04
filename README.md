@@ -22,6 +22,7 @@ Le module MED est terminé et a passé la phase de simulation avec succes.
 La synthétisation du module MED nous informe que le code utilise 25 LUTs ce qui me semble 
 peu mais optimale. Le schéma RTL correspond à ce que l'on attend. Le slack vaut 16.254ns sur 20ns.
 
-	Module MEDIAN:		Exploite le module MED via un algo adapté à 9 pixels
+	Module MEDIAN:			Exploite le module MED via un algo adapté à 9 pixels
+        Module MEDIAN-testbench:  	Test le module MEDIAN
 
-Le module MEDIAN compile. La simulation ne se lance pas du à une erreur.
+Le module MEDIAN compile. La simulation est une réussite fulgurante.
