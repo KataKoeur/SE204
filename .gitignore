@@ -1,6 +1,8 @@
-median/simulation/*
 median/synthese/*/*
-*/work/*
+**/work/*
+*.ini
+*.sdo
+*.vo
 *.psp
 *.log
 *.wlf

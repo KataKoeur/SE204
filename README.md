@@ -31,3 +31,6 @@ J'obtiens les résultats suivants: LUTs = 51, registres = 14, slack = 16.227
 
 La seconde simulation consistant à ajouter les cellules de la technologie utilisée ne fonctionne pas !
 Le fichier MEDIAN.vo contient le code du fichier MEDIAN.sv adapté à la cible: Cyclone II.
+
+Le filtrage de l'image de Bogart bruité est un succès !
+Le projet du filtre médian est terminée !!!
