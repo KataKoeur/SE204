@@ -28,3 +28,6 @@ peu mais optimal. Le schéma RTL correspond à ce que l'on attend. Le slack vaut
 Le module MEDIAN compile. La simulation est une réussite fulgurante.
 Après quelques modifications dans le fichier MEDIAN.sv suite aux erreurs de la synthèse. 
 J'obtiens les résultats suivants: LUTs = 51, registres = 14, slack = 16.227
+
+La seconde simulation consistant à ajouter les cellules de la technologie utilisée ne fonctionne pas !
+Le fichier MEDIAN.vo contient le code du fichier MEDIAN.sv adapté à la cible: Cyclone II.

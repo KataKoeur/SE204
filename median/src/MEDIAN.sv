@@ -19,15 +19,12 @@ DSO <= (cpt>40);
 
 //Le compteur s'incrémente à chaque coup d'horloge
 //et permet de faire avancer l'automate
-//Le reste (actif à 0) remet le compteur à 0
+//Le reset (actif à 0) remet le compteur à 0
 always@(posedge CLK)
-if(!nRST)
-        begin
-        cpt <= 0;
-        end
+if(!nRST) cpt <= 0;
 else
-        if(DSI) cpt <= 0;       //Lecture des pixels en entrée
-        else    cpt <= cpt + 1; //Tous les pixels sont présent, Lancement de l'algo
+       	  if(DSI) cpt <= 0;       //Lecture des pixels en entrée
+       	  else    cpt <= cpt + 1; //Tous les pixels sont présent, Lancement de l'algo
 
 //Machine à état
 always@(*)
