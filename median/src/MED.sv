@@ -11,7 +11,7 @@ logic [SIZE-1:0] registre [0:NB_PIXEL-1];
 logic [SIZE-1:0] MAX, MIN;
 
 //Module MCE
-MCE #(.SIZE(SIZE)) dut(.A(registre[NB_PIXEL-1]), .B(registre[NB_PIXEL-2]), .MAX(MAX), .MIN(MIN));
+MCE #(.SIZE(SIZE)) I_MCE(.A(registre[NB_PIXEL-1]), .B(registre[NB_PIXEL-2]), .MAX(MAX), .MIN(MIN));
 
 //registre à décalage de R0 à R7
 always@(posedge CLK)

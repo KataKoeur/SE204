@@ -1,4 +1,4 @@
-module MCE_testbench;  // Un environnement de simulation n'a ni entrées ni
+module MCE_tb;  // Un environnement de simulation n'a ni entrées ni
                 // sorties.
 
   logic [7:0] A, B;      // On déclare les variables qui seront connectées
@@ -51,5 +51,3 @@ module MCE_testbench;  // Un environnement de simulation n'a ni entrées ni
   end
 
 endmodule
-
-

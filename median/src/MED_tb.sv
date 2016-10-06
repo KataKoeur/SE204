@@ -1,4 +1,4 @@
-module MED_testbench;  // Un environnement de simulation n'a ni entrees ni
+module MED_tb;  // Un environnement de simulation n'a ni entrees ni
                 // sorties.
 
   logic [7:0] DI;      // On declare les variables qui seront connectees

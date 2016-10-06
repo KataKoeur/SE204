@@ -6,7 +6,7 @@
 
 `timescale 1ps/1ps
 
-module MEDIAN_testbench;
+module MEDIAN_tb;
 
   logic [7:0] DI;
   logic CLK, nRST, DSI;
