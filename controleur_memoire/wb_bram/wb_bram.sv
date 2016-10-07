@@ -10,7 +10,7 @@ module wb_bram #(parameter mem_adr_width = 11) (
       wshb_if.slave wb_s
       );
 
-logic [3:0][7:0] memoire [0:mem_adr_width-1];
+logic [3:0][7:0] memoire [0:2**mem_adr_width-1];
 logic ack_reg;
 
 //Initialisation du bus
