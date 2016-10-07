@@ -38,3 +38,9 @@ Le fichier MEDIAN.vo contient le code du fichier MEDIAN.sv adapté à la cible: 
 
 Le filtrage de l'image de Bogart bruité est un succès !
 Le projet du filtre médian est terminée !!!
+
+# Bus Wishbone (pour le 14/10/2016)
+
+Codage d'un contrôleur de mémoire suivant la norme Wishbone.
+
+Gestion de la lecture de la memoire. Il n'est pas nécessaire d'utiliser une machine à état.
