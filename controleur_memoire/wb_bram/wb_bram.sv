@@ -11,33 +11,24 @@ module wb_bram #(parameter mem_adr_width = 11) (
       );
 
 logic [3:0][7:0] memoire [0:mem_adr_width-1];
-logic WE;
+logic ack_reg;
 
-/*
 //Initialisation du bus
 always@(*)
 if(wb_s.rst)
-//A completer
-*/
-
-//Attente de la demande d'accès par le maître
-always@(posedge wb_s.clk)
-if(wb_s.cyc)
-	if(wb_s.stb)
-		if(wb_s.we) WE <= 1; //ecriture
-		else 	    WE <= 0; //lecture
+	begin
+	wb_s.ack <= 0;
+	ack_reg <= 0;
+	//A completer
+	end
 
 //Lecture
-always@(*)
-if (!WE)
-	begin
-	wb_s.dat_sm <= memoire[wb_s.adr];
-	wb_s.ack <= 1;
-	end
-else 	wb_s.ack <= 0;
-
-//Ecriture
-
+always@(posedge wb_s.clk)
+begin
+wb_s.dat_sm <= memoire[wb_s.adr]; //lecture de la mémoire en sortie quoi qu'il arrive
+wb_s.ack <= ack_reg; //registre à décalage permettant de mettre ack à 1 avec 1 cycle de retard
+ack_reg <= (wb_s.cyc && wb_s.stb && !wb_s.we)? 1 : 0;
+end
 
 endmodule
 
