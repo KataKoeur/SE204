@@ -12,6 +12,15 @@ module wb_bram #(parameter mem_adr_width = 11) (
 
 logic [3:0][7:0] memoire [0:2**mem_adr_width-1];
 logic ack_reg;
+integer k;
+
+initial
+begin
+for (k = 0; k < 2**mem_adr_width - 1; k = k + 1)
+begin
+    memoire[k] = 1;
+end
+end
 
 //Initialisation du bus
 always@(*)

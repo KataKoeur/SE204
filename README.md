@@ -48,3 +48,5 @@ Gestion de l'écriture avec sel.
 Gestion synchrone de ack avec un cylce de retard pour la validation de la lecture.
 Gestion asynchrone de la lecture et de l'écriture.
 ERREUR: LA SIMULATION MONTRE QUE LA MEMOIRE NE CHANGE JAMAIS !!!
+
+Initialisation de la memoire à 1 pour constater une lecture différente lors de la simu... ECHEC !
