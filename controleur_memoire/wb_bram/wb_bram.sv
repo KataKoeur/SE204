@@ -22,13 +22,15 @@ if(wb_s.rst)
 	//A completer
 	end
 
-//Lecture
 always@(posedge wb_s.clk)
 begin
+
 wb_s.dat_sm <= memoire[wb_s.adr]; //lecture de la mémoire en sortie quoi qu'il arrive
+memoire[wb_s.adr] <= (wb_s.cyc && wb_s.stb && wb_s.we)? wb_s.dat_ms : memoire[wb_s.adr]; //ecriture
+
 wb_s.ack <= ack_reg; //registre à décalage permettant de mettre ack à 1 avec 1 cycle de retard
-ack_reg <= (wb_s.cyc && wb_s.stb && !wb_s.we)? 1 : 0;
+ack_reg <= (wb_s.cyc && wb_s.stb)? 1 : 0;
+
 end
 
 endmodule
-

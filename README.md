@@ -44,3 +44,4 @@ Le projet du filtre médian est terminée !!!
 Codage d'un contrôleur de mémoire suivant la norme Wishbone.
 
 Gestion de la lecture de la memoire. Il n'est pas nécessaire d'utiliser une machine à état.
+Gestion de l'écriture sans prendre en compte sel.
