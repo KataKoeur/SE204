@@ -43,7 +43,7 @@ wb_s.ack = ack_read || ack_write;
 end
 
 
-//block lecture et registre à décalage ack
+//block lecture
 always_ff@(posedge wb_s.clk)
 begin
 wb_s.dat_sm <= memoire[wb_s.adr[mem_adr_width+1:2]];

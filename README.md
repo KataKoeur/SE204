@@ -43,9 +43,16 @@ Le projet du filtre médian est terminée !!!
 
 Codage d'un contrôleur de mémoire suivant la norme Wishbone.
 
+Wishbone Classic
 Gestion de la lecture de la memoire. Il n'est pas nécessaire d'utiliser une machine à état.
 Gestion de l'écriture avec sel.
 Gestion asynchrone de ack avec un cylce de retard pour la validation de la lecture.
 Gestion synchrone de la lecture et de l'écriture.
 
-CA MAAAAAAAARCHE !!!!
+La simulation à enfin fontionné ! L'erreur se trouvait finalement dans la gestion maladroite de l'ack.
+Suite à la synthétisation, j'obtiens les performance suivantes:
+
+	LUTs = 6
+	Freq = 1088.139 MHz
+	Temps total pour les séquences en mode wishbone classic = 9873800
+
