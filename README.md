@@ -45,8 +45,9 @@ Codage d'un contrôleur de mémoire suivant la norme Wishbone.
 
 Gestion de la lecture de la memoire. Il n'est pas nécessaire d'utiliser une machine à état.
 Gestion de l'écriture avec sel.
-Gestion synchrone de ack avec un cylce de retard pour la validation de la lecture.
-Gestion asynchrone de la lecture et de l'écriture.
-ERREUR: LA SIMULATION MONTRE QUE LA MEMOIRE NE CHANGE JAMAIS !!!
+Gestion asynchrone de ack avec un cylce de retard pour la validation de la lecture.
+Gestion synchrone de la lecture et de l'écriture.
 
-Initialisation de la memoire à 1 pour constater une lecture différente lors de la simu... ECHEC !
+Lors de la simulation, toutes les cases memoires sont correctes à l'execption de la premiere ligne !
+
+
