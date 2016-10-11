@@ -48,6 +48,4 @@ Gestion de l'écriture avec sel.
 Gestion asynchrone de ack avec un cylce de retard pour la validation de la lecture.
 Gestion synchrone de la lecture et de l'écriture.
 
-Lors de la simulation, toutes les cases memoires sont correctes à l'execption de la premiere ligne !
-
-
+CA MAAAAAAAARCHE !!!!
