@@ -34,20 +34,12 @@ end
 
 //ack write
 always_comb
-begin
 ack_write = wb_s.stb && wb_s.we;
-end
 
 //ACK
 always_comb
-begin
-if(!wb_s.cti)      //mode classique
-	wb_s.ack = ack_read || ack_write;
-else if(wb_s.cti == 2) //debut mode rafale 
-	wb_s.ack = 1;	
-else	           //fin mode rafale
-	wb_s.ack = 0;
-end
+if(!wb_s.cti) wb_s.ack = ack_read || ack_write; //mode classique
+else 	      wb_s.ack = wb_s.stb;		//mode rafale
 
 
 //block lecture
