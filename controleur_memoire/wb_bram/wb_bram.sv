@@ -66,8 +66,8 @@ if(!wb_s.cti) //mode classique
 		end
 
 //Gestion compteur d'adresse
-always_ff@(posedge clk)
-if(wb_s.cti == '010') adr_cpt <= wb_s.adr;
+always_ff@(posedge wb_s.clk)
+if(wb_s.cti == "010") adr_cpt <= wb_s.adr;
 else		      adr_cpt <= adr_cpt +4;
 
 
