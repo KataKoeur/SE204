@@ -56,3 +56,6 @@ Suite à la synthétisation, j'obtiens les performance suivantes:
 	Freq = 1088.139 MHz
 	Temps total pour les séquences en mode wishbone classic = 9873800
 
+Wishbone Burst
+Ajout des conditions du signal CTI: 000 = mode classic, 010 = début mode burst et 111 = fin mode burst
+Ajout d'un compteur d'adresse: incrémente +4 tous les coups d'horloges

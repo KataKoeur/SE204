@@ -16,6 +16,8 @@ integer i;
 logic ack_read;
 logic ack_write;
 
+logic adr_cpt;
+
 //Initialisation du bus
 always@(*)
 if(wb_s.rst)
@@ -26,36 +28,47 @@ if(wb_s.rst)
 //ack read
 always_ff@(posedge wb_s.clk)
 begin
-ack_read <= 0;
-ack_read <= wb_s.stb && !wb_s.we && !wb_s.ack;
+if(!wb_s.cti) //mode classique
+	ack_read <= 0;
+	ack_read <= wb_s.stb && !wb_s.we && !wb_s.ack;
 end
 
 //ack write
 always_comb
 begin
-ack_write = wb_s.stb && wb_s.we;
+if(!wb_s.cti) //mode classique
+	ack_write = wb_s.stb && wb_s.we;
 end
 
 //ACK
 always_comb
 begin
-wb_s.ack = ack_read || ack_write;
+if(!wb_s.cti) //mode classique
+	wb_s.ack = ack_read || ack_write;
 end
 
 
 //block lecture
 always_ff@(posedge wb_s.clk)
 begin
-wb_s.dat_sm <= memoire[wb_s.adr[mem_adr_width+1:2]];
+if(!wb_s.cti) //mode classique
+	wb_s.dat_sm <= memoire[wb_s.adr[mem_adr_width+1:2]];
 end
 
 //block ecriture
 always_ff@(posedge wb_s.clk)
-if(wb_s.stb && wb_s.we)
-	begin
-	for(i = 0; i<4; i = i+1)
-		if(wb_s.sel[i])
-			memoire[wb_s.adr[mem_adr_width+1:2]][i] <= wb_s.dat_ms[(7+(i*8)) -:8];
-	end
+if(!wb_s.cti) //mode classique
+	if(wb_s.stb && wb_s.we)
+		begin
+		for(i = 0; i<4; i = i+1)
+			if(wb_s.sel[i])
+				memoire[wb_s.adr[mem_adr_width+1:2]][i] <= wb_s.dat_ms[(7+(i*8)) -:8];
+		end
+
+//Gestion compteur d'adresse
+always_ff@(posedge clk)
+if(wb_s.cti == '010') adr_cpt <= wb_s.adr;
+else		      adr_cpt <= adr_cpt +4;
+
 
 endmodule
