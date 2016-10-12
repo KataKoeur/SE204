@@ -60,4 +60,5 @@ Wishbone Burst
 Ajout des conditions du signal CTI: 000 = mode classique, 010 = début mode burst et 111 = fin mode burst
 Ajout d'un compteur d'adresses: incrémente +4 tous les coups d'horloges
 Blockage du ACK à 1 lors du mode rafale.
-Il y a bien une lecture qui s'effectue. Néanmoins, aucun bit ne correspond...
+Lors de la simulation, la lecture s'effectue correctement, néanmois, les données lu ne corresponde pas toujours à ce que l'on souhaite...
+
