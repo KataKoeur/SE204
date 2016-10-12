@@ -43,7 +43,7 @@ always_comb
 begin
 if(!wb_s.cti)      //mode classique
 	wb_s.ack = ack_read || ack_write;
-else if(!wb_s.cti) //debut mode rafale 
+else if(wb_s.cti == 2) //debut mode rafale 
 	wb_s.ack = 1;	
 else	           //fin mode rafale
 	wb_s.ack = 0;
@@ -71,7 +71,7 @@ if(!wb_s.cti) //mode classique
 
 //Gestion compteur d'adresse
 always_ff@(posedge wb_s.clk)
-if(wb_s.cti == "000") adr_cpt <= wb_s.adr;
-else 		      adr_cpt <= adr_cpt +4;
+if(!wb_s.cti) adr_cpt <= wb_s.adr;
+else 	      adr_cpt <= adr_cpt +4;
 
 endmodule
