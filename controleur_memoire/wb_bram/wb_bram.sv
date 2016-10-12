@@ -16,7 +16,7 @@ integer i;
 logic ack_read;
 logic ack_write;
 
-logic adr_cpt;
+logic [31:0]adr_cpt;
 
 //Initialisation du bus
 always@(*)
@@ -28,23 +28,25 @@ if(wb_s.rst)
 //ack read
 always_ff@(posedge wb_s.clk)
 begin
-if(!wb_s.cti) //mode classique
-	ack_read <= 0;
-	ack_read <= wb_s.stb && !wb_s.we && !wb_s.ack;
+ack_read <= 0;
+ack_read <= wb_s.stb && !wb_s.we && !wb_s.ack;
 end
 
 //ack write
 always_comb
 begin
-if(!wb_s.cti) //mode classique
-	ack_write = wb_s.stb && wb_s.we;
+ack_write = wb_s.stb && wb_s.we;
 end
 
 //ACK
 always_comb
 begin
-if(!wb_s.cti) //mode classique
+if(!wb_s.cti)      //mode classique
 	wb_s.ack = ack_read || ack_write;
+else if(!wb_s.cti) //debut mode rafale 
+	wb_s.ack = 1;	
+else	           //fin mode rafale
+	wb_s.ack = 0;
 end
 
 
@@ -53,6 +55,8 @@ always_ff@(posedge wb_s.clk)
 begin
 if(!wb_s.cti) //mode classique
 	wb_s.dat_sm <= memoire[wb_s.adr[mem_adr_width+1:2]];
+else	      //mode rafale
+	wb_s.dat_sm <= memoire[adr_cpt[mem_adr_width+1:2]];
 end
 
 //block ecriture
@@ -67,8 +71,7 @@ if(!wb_s.cti) //mode classique
 
 //Gestion compteur d'adresse
 always_ff@(posedge wb_s.clk)
-if(wb_s.cti == "010") adr_cpt <= wb_s.adr;
-else		      adr_cpt <= adr_cpt +4;
-
+if(wb_s.cti == "000") adr_cpt <= wb_s.adr;
+else 		      adr_cpt <= adr_cpt +4;
 
 endmodule

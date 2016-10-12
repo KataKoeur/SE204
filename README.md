@@ -59,3 +59,4 @@ Suite à la synthétisation, j'obtiens les performance suivantes:
 Wishbone Burst
 Ajout des conditions du signal CTI: 000 = mode classic, 010 = début mode burst et 111 = fin mode burst
 Ajout d'un compteur d'adresse: incrémente +4 tous les coups d'horloges
+Blockage du ACK à 1 lors du mode rafale.
