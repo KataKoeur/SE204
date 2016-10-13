@@ -60,5 +60,6 @@ Wishbone Burst
 Ajout des conditions du signal CTI: 000 = mode classique, 010 = début mode burst et 111 = fin mode burst
 Ajout d'un compteur d'adresses: incrémente +4 tous les coups d'horloges
 Blockage du ACK à 1 lors du mode rafale.
-Lors de la simulation, la lecture s'effectue correctement, néanmois, les données lu ne corresponde pas toujours à ce que l'on souhaite...
-
+Abandon du bloc gestion compteur d'adresse pour faire ce calcule directement dans le bloc lecture.
+Abandon des équations booléennes pour un enchainement de condition if en cascade dans le bloc lecture.
+La simulation a enfin aboutie !!!
