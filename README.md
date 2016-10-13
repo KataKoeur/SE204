@@ -63,3 +63,12 @@ Blockage du ACK à 1 lors du mode rafale.
 Abandon du bloc gestion compteur d'adresse pour faire ce calcule directement dans le bloc lecture.
 Abandon des équations booléennes pour un enchainement de condition if en cascade dans le bloc lecture.
 La simulation a enfin aboutie !!!
+Après quelques modification, le code à réussi à synthétiser, cela implique que j'ai re veérifier la simulation après avec succès.
+Voici les résultas obtenues:
+
+	LUTs = 95
+	Freq = 400.000 Mhz
+	Temps total pour les séquences en mode registered feedback = 6504410
+
+Les performances ont baissées entre le mode classique et le mode rafale.
+Le projet du bus Wishbone est terminé !!!

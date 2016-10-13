@@ -15,7 +15,6 @@ wire [mem_adr_width-1:0] adresse_index = wb_s.adr[mem_adr_width+1:2];
 integer i;
 
 logic ack_read;
-logic ack_write;
 
 logic [mem_adr_width-1:0] adresse_cpt;
 
@@ -27,8 +26,7 @@ if(wb_s.rst)
 	//A completer
 	end
 
-//ACK
-always_comb //		      *ack write*	*ack read*
+//ACK         		      *ack write*       *ack read*
 assign wb_s.ack = wb_s.stb && (wb_s.we || (!wb_s.we && ack_read));
 
 //block lecture
