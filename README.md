@@ -72,3 +72,21 @@ Voici les résultas obtenues:
 
 Les performances ont baissées entre le mode classique et le mode rafale.
 Le projet du bus Wishbone est terminé !!!
+
+# Affichage Vidéo (pour fin P1)
+
+L'objectif de ce microprojet est de bâtir une architecture de "carte graphique", pour affichage de vidéo sur la maquette FPGA DE1-SoC. Le travail consistera, partant d'une "page blanche" à construire pas à pas un environnement complet de simulation et de synthèse permettant de vérifier chaque étape du travail:
+
+	Les contraintes liées à l'implantation sur du matériel "Réel" seront traitées tout au long du projet.
+	Les étudiants disposerons de briques de base (contrôleur de mémoire, générateur vidéo (logiciel),...)
+	Les étudiants disposerons des documentations techniques (carte DE1-SoC, mémoire SDRAM, paramètres VIDEO,...)
+	Les échanges entre blocs internes seront basées sur le protocole WishBone
+
+Le système sera composé des éléments suivants :
+
+	Un contrôleur  VIDEO  permettant d'afficher une image sur un écran VGA.
+	Une SDRAM servant de mémoire d'image, lue en permanence par le contrôleur video.
+	Le HPS (pour Hard Processor System), un double processeur ARM Cortex A9 intégré dans le FPGA
+	Un décodeur vidéo logiciel, fonctionnant sur le HPS et écrivant les images dans la SDRAM à travers le FPGA.
+	Un arbitre permettant de partager l'accès à la SDRAM entre le contrôleur vidéo et  le décodeur vidéo. 
+
