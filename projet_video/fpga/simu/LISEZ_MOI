@@ -1,0 +1,4 @@
+Ce répertoire est utilisé exclusivement pour la simulation du FPGA
+
+Le Makefile proposé est un squelette suffisant pour la première étape des travaux.
+Vous l'adapterez au besoin.
