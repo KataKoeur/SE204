@@ -2,7 +2,7 @@
 // FPGA - Afficheur Vidéo
 //-----------------------------------------------------------------
 
-module(	// port d'entrée
+module fpga(// port d'entrée
 	input logic fpga_CLK,
 	input logic fpga_CLK_AUX,
 	input logic fpga_SW0,
@@ -28,7 +28,7 @@ assign fpga_LEDR3 = fpga_NRST;
 
 // Assignation des compteur au LED
 assign fpga_LEDR1 = (cpt_clk_aux < 25'd13_500_000);
-assign fpga_LEDR2 = (cpt_clk_aux < 26'd25_000_000);
+assign fpga_LEDR2 = (cpt_clk < 26'd25_000_000);
 
 // Compteur 27MHz -> 1Hz
 always_ff@(posedge fpga_CLK)

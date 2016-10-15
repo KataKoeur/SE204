@@ -67,4 +67,6 @@ initial begin: ENTREES
 	$display("Fin de la simulation");
 	$finish;
 
+	end
+
 endmodule
