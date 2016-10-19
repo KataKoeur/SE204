@@ -3,11 +3,11 @@
 //-----------------------------------------------------------------
 
 module fpga(// port d'entrée
-	input logic fpga_CLK,
-	input logic fpga_CLK_AUX,
-	input logic fpga_SW0,
-	input logic fpga_SW1,
-	input logic fpga_NRST,
+	input  fpga_CLK,
+	input  fpga_CLK_AUX,
+	input  fpga_SW0,
+	input  fpga_SW1,
+	input  fpga_NRST,
 	// port de sortie
 	output logic fpga_LEDR0,
 	output logic fpga_LEDR1,
@@ -16,8 +16,19 @@ module fpga(// port d'entrée
 	output logic fpga_SEL_CLK_AUX
 	);
 
-logic [25:0]cpt_clk;
-logic [24:0]cpt_clk_aux;
+`ifdef SIMULATION
+parameter MAX_CPT_50 = 50_000_000;
+parameter MAX_CPT_27 = 27_000_000;
+`else
+parameter MAX_CPT_50 = 50_000_000;
+parameter MAX_CPT_27 = 27_000_000;
+`endif
+
+localparam CPT_50_W  = $clog2(MAX_CPT_50);
+localparam CPT_27_W  = $clog2(MAX_CPT_27);
+
+logic [CPT_50_W-1:0]CPT_50;
+logic [CPT_27_W-1:0]CPT_27;
 
 // Assignation des switchs
 assign fpga_LEDR0 = fpga_SW0;
@@ -27,22 +38,25 @@ assign fpga_SEL_CLK_AUX = fpga_SW1;
 assign fpga_LEDR3 = fpga_NRST;
 
 // Assignation des compteur au LED
-assign fpga_LEDR1 = (cpt_clk_aux < 25'd13_500_000);
-assign fpga_LEDR2 = (cpt_clk < 26'd25_000_000);
+assign fpga_LEDR1 = (CPT_27 < MAX_CPT_50/2);
+assign fpga_LEDR2 = (CPT_50 < MAX_CPT_27/2);
 
 // Compteur 27MHz -> 1Hz
-always_ff@(posedge fpga_CLK)
-if(!fpga_NRST) cpt_clk_aux <= 0;
+always_ff@(posedge fpga_CLK_AUX or negedge fpga_NRST)
+if(!fpga_NRST) CPT_27 <= 0;
 else
-	if(cpt_clk_aux < 25'd27_000_000 ) cpt_clk_aux <= 0;
-	else 				  cpt_clk_aux <= cpt_clk_aux +1;
+begin
+  CPT_27 <= CPT_27 +1;
+	if(CPT_27 == MAX_CPT_27 -1 ) CPT_27 <= 0;
+end
 
 // Compteur 50MHz -> 1Hz
-always_ff@(posedge fpga_CLK)
-if(!fpga_NRST) cpt_clk <= 0;
-else    
-        if(cpt_clk < 26'd50_000_000 ) cpt_clk <= 0;
-        else                          cpt_clk <= cpt_clk +1;
-
+always_ff@(posedge fpga_CLK or negedge fpga_NRST)
+if(!fpga_NRST) CPT_50 <= 0;
+else
+begin
+	CPT_50 <= CPT_50 +1;
+  if(CPT_50 == MAX_CPT_50 -1 ) CPT_50 <= 0;
+end
 
 endmodule
