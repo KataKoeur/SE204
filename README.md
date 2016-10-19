@@ -90,3 +90,8 @@ Le système sera composé des éléments suivants :
 	Un décodeur vidéo logiciel, fonctionnant sur le HPS et écrivant les images dans la SDRAM à travers le FPGA.
 	Un arbitre permettant de partager l'accès à la SDRAM entre le contrôleur vidéo et  le décodeur vidéo. 
 
+## Etape 1 : Squelette
+
+Module fpga avec 2 CLK, 2 switch, 1 reset et 4 LED
+Le testbench permet de tout tester automatiquement. Le module fpga à passé les testes avec succes.
+La synthès compile sans erreur mais releve 7 Warning au lieux d'un seul.
