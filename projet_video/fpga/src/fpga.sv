@@ -17,8 +17,8 @@ module fpga(// port d'entrée
 	);
 
 `ifdef SIMULATION
-parameter MAX_CPT_50 = 50_000_000;
-parameter MAX_CPT_27 = 27_000_000;
+parameter MAX_CPT_50 = 50;
+parameter MAX_CPT_27 = 27;
 `else
 parameter MAX_CPT_50 = 50_000_000;
 parameter MAX_CPT_27 = 27_000_000;
@@ -46,7 +46,7 @@ always_ff@(posedge fpga_CLK_AUX or negedge fpga_NRST)
 if(!fpga_NRST) CPT_27 <= 0;
 else
 begin
-  CPT_27 <= CPT_27 +1;
+  CPT_27 <= CPT_27 +1'b1;
 	if(CPT_27 == MAX_CPT_27 -1 ) CPT_27 <= 0;
 end
 
@@ -55,7 +55,7 @@ always_ff@(posedge fpga_CLK or negedge fpga_NRST)
 if(!fpga_NRST) CPT_50 <= 0;
 else
 begin
-	CPT_50 <= CPT_50 +1;
+	CPT_50 <= CPT_50 +1'b1;
   if(CPT_50 == MAX_CPT_50 -1 ) CPT_50 <= 0;
 end
 

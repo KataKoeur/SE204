@@ -17,8 +17,8 @@ fpga I_fpga(.fpga_CLK(CLK), .fpga_CLK_AUX(CLK_AUX), .fpga_SW0(SW0), .fpga_SW1(SW
 always #10ns CLK = ~CLK; // 50MHz
 always #18ns if(SEL_CLK_AUX) CLK_AUX = ~CLK_AUX; // 27MHz actifs sur condition
 
-int FREQ = 1000;
-int EPSILON  = 100;
+int FREQ = 1_200_000;
+int EPSILON  = 200_000;
 
 logic freq1_done = 0;
 logic freq2_done = 0;
@@ -31,9 +31,9 @@ shortreal t;
 	t = $realtime();
 	@(posedge LEDR1)
 	t = $realtime() - t;
-	$display("---> La fréquence de la led 1 est de %f Hz", 1e12/t);
+	$display("---> La fréquence de la led 1 est de %f Hz", t/1.21e6);
 	@(posedge CLK);
-	if (t/1e9 < FREQ-EPSILON || t/1e9 > FREQ+EPSILON)
+	if (t < FREQ-EPSILON || t > FREQ+EPSILON)
 		begin
 		$display("Erreur : Frequence de LED1 inapproprié !!!");
 		$stop;
@@ -48,9 +48,9 @@ shortreal t;
 	t = $realtime();
 	@(posedge LEDR2)
 	t = $realtime() - t;
-	$display("---> La fréquence de la led 2 est de %f Hz", 1e12/t);
+	$display("---> La fréquence de la led 2 est de %f Hz", t/1.21e6);
 	@(posedge CLK);
-	if (t/1e9 < FREQ-EPSILON || t/1e9 > FREQ+EPSILON)
+	if (t < FREQ-EPSILON || t > FREQ+EPSILON)
 		begin
 		$display("Erreur : Frequence de LED2 inapproprié !!!");
 		$stop;
