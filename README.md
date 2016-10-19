@@ -94,4 +94,6 @@ Le système sera composé des éléments suivants :
 
 Module fpga avec 2 CLK, 2 switch, 1 reset et 4 LED
 Le testbench permet de tout tester automatiquement. Le module fpga à passé les testes avec succes.
-La synthès compile sans erreur mais releve 7 Warning au lieux d'un seul.
+La synthès compile sans erreur mais releve plusieur Warning : Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Il ne sont néamoins pas important.
+Le test sur maquette est un succès. Tout réagis comme il se le doit. rq: la fréquence de clignotement des 2 leds n'est pas exactement la même.

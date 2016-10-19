@@ -47,3 +47,6 @@ set_location_assignment PIN_V18  -to fpga_LEDR3
 set_location_assignment PIN_AB12 -to fpga_SW0
 set_location_assignment PIN_AC12 -to fpga_SW1
 set_location_assignment PIN_AA14 -to fpga_NRST
+
+set_instance_assignment -name SLEW_RATE 1 -to fpga_LEDR*
+set_instance_assignment -name SLEW_RATE 1 -to fpga_SEL_CLK_AUX
