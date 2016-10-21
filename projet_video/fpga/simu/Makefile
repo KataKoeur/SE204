@@ -22,10 +22,10 @@ SOURCES = $(wildcard ${TOPDIR}/*/src/*.sv ${TOPDIR}/*/tb_src/*.sv)
 TARGETS = $(addprefix ${WORK_DIR}/.,$(notdir $(SOURCES:%.sv=.%.compiled)))
 
 # chemin des sources pour Make
-vpath %.sv $(DIRS) 
+vpath %.sv $(DIRS)
 
 ## Les cibles
-info: 
+info:
 	@echo "Les commandes possibles sont:"
 	@echo "make compile    : compilation des codes (module à tester et testbenchs)"
 	@echo "make simu_batch : simulation en mode terminal, avec simple affichage des résultats des tests"
@@ -40,18 +40,17 @@ simu_batch: compile
 	cd $(WORK_DIR) ; vsim  -batch -t 1ps -lib work -L altera_lnsim_ver $(TB_TOP) -do "run -all ; quit"
 
 simu_gui: compile
-	cd $(WORK_DIR); vsim -t 1ps -lib work -L altera_lnsim_ver $(TB_TOP) 
+	cd $(WORK_DIR); vsim -t 1ps -lib work -L altera_lnsim_ver $(TB_TOP)
 
-compile: $(TARGETS) 
+compile: $(TARGETS)
 
 $(WORK_DIR)/.%.compiled: %.sv | $(WORK_DIR)
-	cd $(WORK_DIR) ; vlog  +acc +define+SIMULATION -timescale "1ns/1ps" $< 
+	cd $(WORK_DIR) ; vlog  +acc +define+SIMULATION -timescale "1ns/1ps" $<
 	touch $@
 
 $(WORK_DIR):
-	mkdir $(WORK_DIR) 
+	mkdir $(WORK_DIR)
 
 
 clean:
 	rm -rf $(WORK_DIR)
-
