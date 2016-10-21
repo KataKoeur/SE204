@@ -48,7 +48,7 @@ always_ff@(posedge fpga_CLK_AUX or negedge n_rst)
 if(!n_rst)
 	begin
 	CPT_27 <= 0;
-	fpga_LEDR2 <= 0;
+	fpga_LEDR1 <= 0;
 	end
 else
 	begin
@@ -56,7 +56,7 @@ else
 		if(CPT_27 == MAX_CPT_27 -1 )
 		begin
 		CPT_27 <= 0;
-		fpga_LEDR2 <= !fpga_LEDR2; // changement d'état de la LED2
+		fpga_LEDR1 <= !fpga_LEDR1; // changement d'état de la LED1
 		end
 	end
 
@@ -65,7 +65,7 @@ always_ff@(posedge fpga_CLK or negedge n_rst)
 if(!n_rst)
 	begin
 	CPT_50 <= 0;
-	fpga_LEDR1 <= 0;
+	fpga_LEDR2 <= 0;
 	end
 else
 	begin
@@ -73,7 +73,7 @@ else
 	  if(CPT_50 == MAX_CPT_50 -1 )
 			begin
 			CPT_50 <= 0;
-			fpga_LEDR1 <= !fpga_LEDR1; // changement d'état de la LED1
+			fpga_LEDR2 <= !fpga_LEDR2; // changement d'état de la LED2
 			end
 	end
 
