@@ -87,6 +87,16 @@ initial begin: ENTREES
 		$stop;
 		end
 
+	repeat(5) @(negedge CLK);
+
+	@(negedge CLK);
+	NRST = 1'b0; //activation du reset
+
+	repeat(5) @(negedge CLK);
+
+	@(negedge CLK);
+	NRST = 1'b1; //désactivation du reset
+
 	#1; //attente d'une unité de temps
 
 	//------------------- SW0 -> LEDR0 -------------------
@@ -128,7 +138,7 @@ initial begin: ENTREES
 	$display("Aucune erreur détecté, SUPER TRAVAIL !!!");
 	$display("--- Fin de la simulation ---");
 
-	$finish;
+	#1ms	$finish;
 
 	end
 
