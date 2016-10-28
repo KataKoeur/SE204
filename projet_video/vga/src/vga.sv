@@ -41,7 +41,7 @@ reset #(.ETAT_ACTIF(1)) I_reset (.CLK(vga_CLK), .NRST(NRST), .n_rst(rst));
 //signal de sortie
 assign vga_ifm.VGA_SYNC  = 0;
 assign vga_ifm.VGA_CLK   = !vga_CLK;
-assign vga_ifm.VGA_BLANK = blank_pixel | blank_ligne;
+assign vga_ifm.VGA_BLANK = blank_pixel & blank_ligne;
 
 //signaux de synchronisation PIXEL
 always @(posedge vga_CLK)
@@ -63,6 +63,7 @@ else
   if(CPT_PIXEL == vga_HDISP + vga_HFP + vga_HPULSE) vga_ifm.VGA_HS <= 1;
   if(CPT_PIXEL == vga_HDISP + vga_HFP + vga_HPULSE + vga_HBP)
     begin
+    blank_pixel <= 1;
     CPT_PIXEL <= 0;
     CPT_LIGNE <= CPT_LIGNE + 1'b1; //fin de la ligne, on passe a la suivante
     end
