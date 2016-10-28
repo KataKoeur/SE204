@@ -71,7 +71,11 @@ else
   if(CPT_LIGNE == vga_VDISP) blank_ligne <= 0;
   if(CPT_LIGNE == vga_VDISP + vga_VFP) vga_ifm.VGA_VS <= 0;
   if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE) vga_ifm.VGA_VS <= 1;
-  if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE + vga_VBP) CPT_LIGNE <= 0;
+  if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE + vga_VBP)
+    begin
+    blank_ligne <= 1;
+    CPT_LIGNE <= 0;
+    end
   end
 
   //Génération d'une mire
