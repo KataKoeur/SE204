@@ -74,4 +74,19 @@ else
   if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE + vga_VBP) CPT_LIGNE <= 0;
   end
 
+  //Génération d'une mire
+  always @(posedge vga_CLK)
+  if(CPT_LIGNE %16 == 0 || CPT_PIXEL %16 == 0) //ligne ou colone blanche
+    begin
+    vga_ifm.VGA_R <= 255;
+    vga_ifm.VGA_G <= 255;
+    vga_ifm.VGA_B <= 255;
+    end
+  else
+    begin
+    vga_ifm.VGA_R <= 0;
+    vga_ifm.VGA_G <= 0;
+    vga_ifm.VGA_B <= 0;
+    end
+
 endmodule // vga
