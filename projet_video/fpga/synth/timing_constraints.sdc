@@ -18,7 +18,8 @@ create_clock -name {fpga_CLK_AUX} -period 37.037  [get_ports {fpga_CLK_AUX}]
 # Les horloges sont indépendantes
 set_clock_groups -exclusive \
 		 -group {fpga_CLK} \
-		 -group {fpga_CLK_AUX} 
+		 -group {fpga_CLK_AUX} \
+		 -group	{I_vga|I_vga_pll|altera_pll_i|general[0].gpll~PLL_OUTPUT_COUNTER|divclk}
 # -----------------------------------------------------------------
 # Cut timing paths
 # -----------------------------------------------------------------

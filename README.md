@@ -100,3 +100,8 @@ Le test sur maquette est un succès. Tout réagis comme il faut.
 Etape 1 terminée
 
 ## Etape 2 : Controleur vidéo VGA
+Tout fonctionne sans problème sur la carte fpga. 
+Seul la partie où l'on doit afficher en parallele de la simulation les images généré n'a pas aboutie. 
+Etape 2 terminée 
+
+## Etape 3 : Controleur de SDRAM
