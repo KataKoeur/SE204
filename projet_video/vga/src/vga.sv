@@ -34,6 +34,8 @@ logic rst;      //signal de reset
 logic blank_pixel;
 logic blank_ligne;
 
+logic [3:0]variation_mire = 0;
+
 //modules
 vga_pll I_vga_pll(.refclk(CLK), .rst(!NRST), .outclk_0(vga_CLK), .locked(locked));
 reset #(.ETAT_ACTIF(1)) I_reset (.CLK(vga_CLK), .NRST(NRST), .n_rst(rst));
@@ -75,12 +77,15 @@ else
     begin
     blank_ligne <= 1;
     CPT_LIGNE <= 0;
+    variation_mire <= variation_mire + 1'b1; //fait varier la taille de la grille affiché
     end
   end
 
+
+
   //Génération d'une mire
   always @(posedge vga_CLK)
-  if(CPT_LIGNE %16 == 0 || CPT_PIXEL %16 == 0) //ligne ou colone blanche
+  if(CPT_LIGNE %variation_mire == 0 || CPT_PIXEL %variation_mire == 0) //ligne ou colone blanche
     begin
     vga_ifm.VGA_R <= 255;
     vga_ifm.VGA_G <= 255;
