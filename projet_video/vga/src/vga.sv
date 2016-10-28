@@ -67,7 +67,6 @@ else
     CPT_PIXEL <= 0;
     CPT_LIGNE <= CPT_LIGNE + 1'b1; //fin de la ligne, on passe a la suivante
     end
-  end
   //compteur ligne
   if(CPT_LIGNE == vga_VDISP) blank_ligne <= 0;
   if(CPT_LIGNE == vga_VDISP + vga_VFP) vga_ifm.VGA_VS <= 0;
