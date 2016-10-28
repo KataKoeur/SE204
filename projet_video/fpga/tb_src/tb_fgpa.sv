@@ -17,6 +17,8 @@ fpga #(.HDISP(160), .VDISP(90)) I_fpga(.fpga_CLK(CLK), .fpga_CLK_AUX(CLK_AUX),
 		.fpga_LEDR1(LEDR1), .fpga_LEDR2(LEDR2), .fpga_LEDR3(LEDR3),
 		.fpga_SEL_CLK_AUX(SEL_CLK_AUX), .vga_ifm(vga_if0));
 
+screen #(.mode(0),.X(160),.Y(90)) screen0(.vga_ifs(vga_if0));
+
 // Horloges
 always #10ns CLK = ~CLK; // 50MHz
 always #18ns if(SEL_CLK_AUX) CLK_AUX = ~CLK_AUX; // 27MHz actifs sur condition
