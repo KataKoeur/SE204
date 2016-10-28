@@ -7,11 +7,15 @@ logic NRST;
 // sorties
 wire LEDR0, LEDR1, LEDR2, LEDR3;
 wire SEL_CLK_AUX;
+// interface
+vga_if vga_if0();
 
 
-fpga I_fpga(.fpga_CLK(CLK), .fpga_CLK_AUX(CLK_AUX), .fpga_SW0(SW0), .fpga_SW1(SW1), .fpga_NRST(NRST),
-		.fpga_LEDR0(LEDR0), .fpga_LEDR1(LEDR1), .fpga_LEDR2(LEDR2), .fpga_LEDR3(LEDR3),
-		.fpga_SEL_CLK_AUX(SEL_CLK_AUX)); // On instancie le module a tester.
+// Instance le module a tester.
+fpga #(.HDISP(160), .VDISP(90)) I_fpga(.fpga_CLK(CLK), .fpga_CLK_AUX(CLK_AUX),
+		.fpga_SW0(SW0), .fpga_SW1(SW1), .fpga_NRST(NRST), .fpga_LEDR0(LEDR0),
+		.fpga_LEDR1(LEDR1), .fpga_LEDR2(LEDR2), .fpga_LEDR3(LEDR3),
+		.fpga_SEL_CLK_AUX(SEL_CLK_AUX), .vga_ifm(vga_if0));
 
 // Horloges
 always #10ns CLK = ~CLK; // 50MHz
@@ -20,11 +24,36 @@ always #18ns if(SEL_CLK_AUX) CLK_AUX = ~CLK_AUX; // 27MHz actifs sur condition
 int FREQ = 1_000_000;
 int EPSILON  = 100_000;
 
+int NB_PIXEL = 90*18;
+int NB_IMAGE = 3;
+int TEMPS_AUX = 1/27e6;
+
 logic freq1_done = 0;
 logic freq2_done = 0;
+logic vga_done   = 0;
 
 wire freq_done = freq1_done & freq2_done;
 
+
+//---------------------------------------------------------------------------
+initial begin:Vga
+
+//------------------- SW1 -> SEL_CLK_AUX -------------------
+@(negedge CLK);
+SW1 = 1'b1; //activation de CLK_AUX
+
+@(posedge CLK);
+if (SEL_CLK_AUX != 1)
+	begin
+	$display("Erreur : L'horloges auxiliaire ne s'active pas !!!");
+	$stop;
+	end
+
+	#(NB_PIXEL*NB_IMAGE*TEMPS_AUX)
+	vga_done = 1;
+end
+
+//---------------------------------------------------------------------------
 initial begin:Fref_LED1
 shortreal t;
 	@(posedge LEDR1)
@@ -42,6 +71,7 @@ shortreal t;
 	freq1_done = 1;
 end
 
+//---------------------------------------------------------------------------
 initial begin:Fref_LED2
 shortreal t;
 	@(posedge LEDR2)
@@ -59,6 +89,7 @@ shortreal t;
 	freq2_done = 1;
 end
 
+//---------------------------------------------------------------------------
 initial begin: ENTREES
 
 	CLK 	= 1'b0;
@@ -87,18 +118,6 @@ initial begin: ENTREES
 		$stop;
 		end
 
-	repeat(5) @(negedge CLK);
-
-	@(negedge CLK);
-	NRST = 1'b0; //activation du reset
-
-	repeat(5) @(negedge CLK);
-
-	@(negedge CLK);
-	NRST = 1'b1; //désactivation du reset
-
-	#1; //attente d'une unité de temps
-
 	//------------------- SW0 -> LEDR0 -------------------
 
 	@(negedge CLK);
@@ -121,20 +140,9 @@ initial begin: ENTREES
 		$stop;
 		end
 
-	//------------------- SW1 -> SEL_CLK_AUX -------------------
-
-	@(negedge CLK);
-	SW1 = 1'b1; //activation de CLK_AUX
-
-	@(posedge CLK);
-	if (SEL_CLK_AUX != 1)
-		begin
-		$display("Erreur : L'horloges auxiliaire ne s'active pas !!!");
-		$stop;
-		end
-
 	//-------------------FIN-------------------
 	wait(freq_done);
+	wait(vga_done);
 	$display("Aucune erreur détecté, SUPER TRAVAIL !!!");
 	$display("--- Fin de la simulation ---");
 
