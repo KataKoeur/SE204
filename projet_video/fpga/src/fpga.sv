@@ -13,7 +13,9 @@ module fpga(// port d'entrée
 	output logic fpga_LEDR1,
 	output logic fpga_LEDR2,
 	output logic fpga_LEDR3,
-	output logic fpga_SEL_CLK_AUX
+	output logic fpga_SEL_CLK_AUX,
+	// interface
+	vga_if.master vga_ifm
 	);
 
 //parametres
@@ -28,6 +30,9 @@ parameter MAX_CPT_27 = 27_000_000/2;
 localparam CPT_50_W  = $clog2(MAX_CPT_50);
 localparam CPT_27_W  = $clog2(MAX_CPT_27);
 
+parameter HDISP = 640;
+parameter VDISP = 480;
+
 //signaux
 logic [CPT_50_W-1:0]CPT_50;
 logic [CPT_27_W-1:0]CPT_27;
@@ -35,6 +40,7 @@ logic n_rst;
 
 //modules
 reset I_reset(.CLK(fpga_CLK), .NRST(fpga_NRST), .n_rst(n_rst));
+vga #(.vga_HDISP(HDISP), .vga_VDISP(VDISP)) I_vga(.CLK(fpga_CLK_AUX), .NRST(fpga_NRST), .vga_ifm(vga_ifm));
 
 // Assignation des switchs
 assign fpga_LEDR0 = fpga_SW0;
