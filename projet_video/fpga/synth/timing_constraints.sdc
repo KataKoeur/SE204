@@ -35,4 +35,5 @@ set_false_path -from [get_ports fpga_SW*] -to *
 # Les afficheurs
 set_false_path -from * -to [get_ports {fpga_LEDR*}]
 
-
+# Ajout automatique des contraintes pour les PLL et les autres horloges dérivées
+derive_pll_clocks -create_base_clocks

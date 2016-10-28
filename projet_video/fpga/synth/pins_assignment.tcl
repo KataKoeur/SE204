@@ -50,3 +50,6 @@ set_location_assignment PIN_AA14 -to fpga_NRST
 
 set_instance_assignment -name SLEW_RATE 1 -to fpga_LEDR*
 set_instance_assignment -name SLEW_RATE 1 -to fpga_SEL_CLK_AUX
+
+# Le E/S du contrôleur VGA
+source pins_assignment_vga.tcl
