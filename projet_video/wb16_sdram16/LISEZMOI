@@ -1,0 +1,12 @@
+Controleur SDRAM  à interface Wishbone.
+Le controleur est adapté à l'utilisation d'une SDRAM 64MB de la carte DE1Soc
+L'interface Wishbone est a une largeur de 16 bits
+
+Utilise :
+	- un controleur de sdram adapté de celui de la société Xess
+    - une adaptation vers un bus whisbone 16 bits (avec anticipation de requêtes)
+
+REF. XESS SDRAM CONTROLLER
+    http://www.xess.com/design_examples.php#XESS_Examples
+
+

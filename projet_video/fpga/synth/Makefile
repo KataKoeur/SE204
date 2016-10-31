@@ -12,6 +12,7 @@ all:
 	@echo "make all    : ce message..."
 	@echo "make syn    : lancement de la synthèse"
 	@echo "make log    : affichage du fichier de log de la synthèse"
+	@echo "make load_sdram : chargement de la sdram par une mire précalculée, n'oubliez pas de laisser la carte allumée."
 	@echo "make program: programmation du fpga, n'oubliez pas de brancher et d'allumer la carte..."
 	@echo "make clean  : nettoyage du répertoire"
 
@@ -45,8 +46,14 @@ syn:  $(SYNDEP)
 log: syn.log
 	@cat $< | ${colorize} | less
 
+#hps:
+#	make -C ../../hps
+
 program:
 	quartus_pgm -c DE-SoC -m jtag  -o "p;${PROJET}.sof@2" -o "s;SOCVHPS@1"	
 
+load_sdram:
+	quartus_pgm -c DE-SoC -m jtag  -o "p;feed_sdram.sof@2" -o "s;SOCVHPS@1"	
+
 clean:
-	@rm -rf !(*.tcl|Makefile|*.backup|*.sdc|*.gitignore)
+	@rm -rf !(*.tcl|Makefile|*.backup|*.sdc|*.gitignore|feed_sdram.sof)
