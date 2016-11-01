@@ -3,7 +3,8 @@ module vga (
   input CLK,
   input NRST,
   // VGA interface
-  vga_if.master vga_ifm
+  vga_if.master vga_ifm,
+  wshb_if.master wshb_ifm
   );
 
 //parametres
@@ -45,6 +46,16 @@ assign vga_ifm.VGA_SYNC  = 0;
 assign vga_ifm.VGA_CLK   = !vga_CLK;
 assign vga_ifm.VGA_BLANK = blank_pixel & blank_ligne;
 
+//Wishbone bidon
+assign wshb_ifm.dat_ms 	= 16'hBABE;
+assign wshb_ifm.adr 	= 0;
+assign wshb_ifm.cyc 	= 1'b1;
+assign wshb_ifm.sel 	= 2'b11;
+assign wshb_ifm.stb 	= 1'b1;
+assign wshb_ifm.we 	= 1'b1;
+assign wshb_ifm.cti 	= 0;
+assign wshb_ifm.bte 	= 0;
+
 //signaux de synchronisation PIXEL
 always @(posedge vga_CLK)
 if (rst)
@@ -81,21 +92,19 @@ else
     end
   end
 
-
-
-  //Génération d'une mire
-  always @(posedge vga_CLK)
-  if(CPT_LIGNE %variation_mire == 0 || CPT_PIXEL %variation_mire == 0) //ligne ou colone blanche
-    begin
-    vga_ifm.VGA_R <= 255;
-    vga_ifm.VGA_G <= 255;
-    vga_ifm.VGA_B <= 255;
-    end
-  else
-    begin
-    vga_ifm.VGA_R <= 0;
-    vga_ifm.VGA_G <= 0;
-    vga_ifm.VGA_B <= 0;
-    end
+//Génération d'une mire
+always @(posedge vga_CLK)
+if(CPT_LIGNE %variation_mire == 0 || CPT_PIXEL %variation_mire == 0) //ligne ou colone blanche
+  begin
+  vga_ifm.VGA_R <= 255;
+  vga_ifm.VGA_G <= 255;
+  vga_ifm.VGA_B <= 255;
+  end
+else
+  begin
+  vga_ifm.VGA_R <= 0;
+  vga_ifm.VGA_G <= 0;
+  vga_ifm.VGA_B <= 0;
+  end
 
 endmodule // vga
