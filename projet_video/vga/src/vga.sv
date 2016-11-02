@@ -44,7 +44,7 @@ logic blank_pixel;
 logic blank_ligne;
 
 //signaux FIFO
-logic rclk, read, rempty, write, wfull;
+logic read, rempty, write, wfull;
 logic [vga_DATA_WIDTH-1:0] wdata, rdata;
 logic lecture_done;
 
@@ -106,13 +106,13 @@ else
   end
 
 //signaux de synchronisation lecture SDRAM (ecriture FIFO)
-always @(posedge wshb_ifm.clk)
+always @(posedge wshb_ifm.ack or posedge rst)
 if (rst)
   begin
   CPT_X <= 0;
   CPT_Y <= 0;
   end
-else if(wshb_ifm.ack)
+else
   begin
   //compteur x
   CPT_X <= CPT_X + 1'b1;
