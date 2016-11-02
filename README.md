@@ -8,7 +8,7 @@ Simulation d'un compteur cadencé par une bascule.
 
 # Filtre médian (pour le 07/10/2016)
 
-	Module MCE:		Compare 2 nombres et les renvoie triés 
+	Module MCE:		Compare 2 nombres et les renvoie triés
 	Module MCE-testbench: 	Test sur mille valeurs randoms le module MCE
 
 La simulation sur ModelSim renvoie un message de confirmation du bon fonctionnement du module MCE.
@@ -21,14 +21,14 @@ La synthèse du module MCE indique bien 24 LUTs, ce qui est conforme à l'optima
     Module MED-testbench:   Test sur mille valeurs randoms le module MED
 
 Le module MED est terminé et a passé la phase de simulation avec succes.
-La synthétisation du module MED nous informe que le code utilise 25 LUTs ce qui me semble 
+La synthétisation du module MED nous informe que le code utilise 25 LUTs ce qui me semble
 peu mais optimal. Le schéma RTL correspond à ce que l'on attend. Le slack vaut 16.254ns sur 20ns.
 
 	Module MEDIAN:			Exploite le module MED via un algo adapté à 9 pixels
     Module MEDIAN-testbench:  	Test le module MEDIAN
 
 Le module MEDIAN compile. La simulation est une réussite fulgurante.
-Après quelques modifications dans le fichier MEDIAN.sv suite aux erreurs de la synthèse. 
+Après quelques modifications dans le fichier MEDIAN.sv suite aux erreurs de la synthèse.
 J'obtiens les résultats suivants: LUTs = 51, registres = 14, slack = 16.227
 
 La seconde simulation consistant à ajouter les cellules de la technologie utilisée ne fonctionne pas !
@@ -88,7 +88,7 @@ Le système sera composé des éléments suivants :
 	Une SDRAM servant de mémoire d'image, lue en permanence par le contrôleur video.
 	Le HPS (pour Hard Processor System), un double processeur ARM Cortex A9 intégré dans le FPGA
 	Un décodeur vidéo logiciel, fonctionnant sur le HPS et écrivant les images dans la SDRAM à travers le FPGA.
-	Un arbitre permettant de partager l'accès à la SDRAM entre le contrôleur vidéo et  le décodeur vidéo. 
+	Un arbitre permettant de partager l'accès à la SDRAM entre le contrôleur vidéo et  le décodeur vidéo.
 
 ## Etape 1 : Squelette
 
@@ -100,8 +100,9 @@ Le test sur maquette est un succès. Tout réagis comme il faut.
 Etape 1 terminée
 
 ## Etape 2 : Controleur vidéo VGA
-Tout fonctionne sans problème sur la carte fpga. 
-Seul la partie où l'on doit afficher en parallele de la simulation les images généré n'a pas aboutie. 
-Etape 2 terminée 
+Tout fonctionne sans problème sur la carte fpga. J'affiche sur l'écran d'ordinateur une mire qui evolue dans le temps.
+Seul la partie où l'on doit afficher en parallele de la simulation les images généré n'a pas aboutie.
+Etape 2 terminée
 
 ## Etape 3 : Controleur de SDRAM
+La première simultion est validé. Les transactions sur le bus wishbone commence 2µs après le lancement du programme (contrairement à 2ms indiqué dans l'énoncé).

@@ -48,32 +48,33 @@ logic locked ;
 // Instanciation d'un bush Wishbone 16 bits
 wshb_if #(.DATA_BYTES(2)) wshb_if_0
 (
-        wshb_clk,wshb_rst
+  .clk(wshb_clk),
+	.rst(wshb_rst)
 );
 
 // Instanciation du controleur de sdram
 wb16_sdram16 u_sdram_ctrl
 (
-        // Wishbone 16 bits slave interface
-        .wb_s(wshb_if_0.slave),
-        // SDRAM master interface
-        .sdram_m(sdram_ifm),
-        // SDRAM clock
-        .sdram_clk(sdram_clk)
+  // Wishbone 16 bits slave interface
+  .wb_s(wshb_if_0.slave),
+  // SDRAM master interface
+  .sdram_m(sdram_ifm),
+  // SDRAM clock
+  .sdram_clk(sdram_clk)
 );
 
 //modules
-reset I_reset
+reset I_reset_fpga
 (
-	.CLK(fpga_CLK), 
-	.NRST(fpga_NRST), 
+	.CLK(fpga_CLK),
+	.NRST(fpga_NRST),
 	.n_rst(n_rst)
 );
 
 vga #(.vga_HDISP(HDISP), .vga_VDISP(VDISP)) I_vga
 (
-	.CLK(fpga_CLK_AUX), 
-	.NRST(fpga_NRST), 
+	.CLK(fpga_CLK_AUX),
+	.NRST(fpga_NRST),
 	.vga_ifm(vga_ifm),
 	.wshb_ifm(wshb_if_0)
 );
@@ -87,11 +88,11 @@ wshb_pll pll
 	.locked(locked)
 );
 
-reset I_reset_wshb
+reset #(.ETAT_ACTIF(1)) I_reset_wshb
 (
-        .CLK(wshb_clk), 
-        .NRST(fpga_NRST), 
-        .n_rst(wshb_rst)
+	.CLK(wshb_clk),
+  .NRST(fpga_NRST),
+  .n_rst(wshb_rst)
 );
 
 // Assignation des switchs
