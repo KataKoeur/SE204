@@ -106,3 +106,5 @@ Etape 2 terminée
 
 ## Etape 3 : Controleur de SDRAM
 La première simultion est validé. Les transactions sur le bus wishbone commence 2µs après le lancement du programme (contrairement à 2ms indiqué dans l'énoncé).
+
+Lecture de la SDRAM avec des compteurs indépendant de l'affichage.
