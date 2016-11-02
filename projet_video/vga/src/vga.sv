@@ -66,6 +66,7 @@ reset #(.ETAT_ACTIF(1)) I_reset
   .n_rst(rst)
 );
 
+//fifo de 256 données de 16 bits
 fifo_async #(.DATA_WIDTH(16), .DEPTH_WIDTH(8)) I_fifo_async
 (
   .rst(rst),
@@ -79,6 +80,10 @@ fifo_async #(.DATA_WIDTH(16), .DEPTH_WIDTH(8)) I_fifo_async
   .wfull(wfull)
 );
 
+//gestion FIFO
+assign wclk = wshb_ifm.clk;
+assign wdata = wshb_ifm.dat_sm;
+
 //signal de sortie
 assign vga_ifm.VGA_SYNC  = 0;
 assign vga_ifm.VGA_CLK   = !vga_CLK;
@@ -88,7 +93,6 @@ assign vga_ifm.VGA_BLANK = blank_pixel & blank_ligne;
 assign wshb_ifm.adr = 2*(vga_HDISP*CPT_Y + CPT_X);
 assign wshb_ifm.cyc = 1'b1; //maintenue à 1
 assign wshb_ifm.sel = 2'b11;
-assign wshb_ifm.stb = 1'b1;
 assign wshb_ifm.we  = 1'b0; //1 = ecriture et 0 = lecture
 assign wshb_ifm.cti = 0;
 assign wshb_ifm.bte = 0;
@@ -100,9 +104,15 @@ if (rst)
   CPT_X <= 0;
   CPT_Y <= 0;
   end
+else if(wfull)
+  begin
+  wshb_ifm.stb <= 1'b0;
+  end
 else if(wshb_ifm.ack)
   begin
   //compteur x
+  write <= 1'b1; //ordre d'écrire dans la fifo
+  wshb_ifm.stb <= 1'b1;
   CPT_X <= CPT_X + 1'b1;
   if(CPT_X == vga_HDISP-1)
     begin
