@@ -35,8 +35,6 @@ logic rst;      //signal de reset
 logic blank_pixel;
 logic blank_ligne;
 
-logic [3:0]variation_mire = 0;
-
 //modules
 vga_pll I_vga_pll(.refclk(CLK), .rst(!NRST), .outclk_0(vga_CLK), .locked(locked));
 reset #(.ETAT_ACTIF(1)) I_reset (.CLK(vga_CLK), .NRST(NRST), .n_rst(rst));
@@ -46,15 +44,26 @@ assign vga_ifm.VGA_SYNC  = 0;
 assign vga_ifm.VGA_CLK   = !vga_CLK;
 assign vga_ifm.VGA_BLANK = blank_pixel & blank_ligne;
 
-//Wishbone bidon
-assign wshb_ifm.dat_ms 	= 16'hBABE;
-assign wshb_ifm.adr 	= 0;
-assign wshb_ifm.cyc 	= 1'b1;
-assign wshb_ifm.sel 	= 2'b11;
-assign wshb_ifm.stb 	= 1'b1;
-assign wshb_ifm.we 	= 1'b1;
-assign wshb_ifm.cti 	= 0;
-assign wshb_ifm.bte 	= 0;
+//décodeur RGB565
+always_comb
+if(CPT_PIXEL < vga_HDISP && CPT_LIGNE < vga_VDISP)
+  begin
+  vga_ifm.VGA_R <= wshb_ifm.dat_sm[4:0];   //5-bit
+  vga_ifm.VGA_G <= wshb_ifm.dat_sm[10:5];  //6-bit
+  vga_ifm.VGA_B <= wshb_ifm.dat_sm[15:11]; //5-bit
+  end
+
+//lecture en SDRAM (controleur)
+always_comb
+begin
+wshb_ifm.adr <= 2*(vga_HDISP*CPT_LIGNE + CPT_PIXEL);
+wshb_ifm.cyc <= 1'b1; //maintenue à 1
+wshb_ifm.sel <= 2'b11;
+wshb_ifm.stb <= 1'b1;
+wshb_ifm.we  <= 1'b0; //1 = ecriture et 0 = lecture
+wshb_ifm.cti <= 0;
+wshb_ifm.bte <= 0;
+end
 
 //signaux de synchronisation PIXEL
 always @(posedge vga_CLK)
@@ -67,9 +76,10 @@ if (rst)
   blank_pixel <= 1;
   blank_ligne <= 1;
   end
-else
+else if(wshb_ifm.ack)
   begin
   //compteur pixel
+  wshb_ifm.stb <= 1'b1;
   CPT_PIXEL <= CPT_PIXEL + 1'b1;
   if(CPT_PIXEL == vga_HDISP) blank_pixel <= 0;
   if(CPT_PIXEL == vga_HDISP + vga_HFP) vga_ifm.VGA_HS <= 0;
@@ -88,23 +98,7 @@ else
     begin
     blank_ligne <= 1;
     CPT_LIGNE <= 0;
-    variation_mire <= variation_mire + 1'b1; //fait varier la taille de la grille affiché
     end
-  end
-
-//Génération d'une mire
-always @(posedge vga_CLK)
-if(CPT_LIGNE %variation_mire == 0 || CPT_PIXEL %variation_mire == 0) //ligne ou colone blanche
-  begin
-  vga_ifm.VGA_R <= 255;
-  vga_ifm.VGA_G <= 255;
-  vga_ifm.VGA_B <= 255;
-  end
-else
-  begin
-  vga_ifm.VGA_R <= 0;
-  vga_ifm.VGA_G <= 0;
-  vga_ifm.VGA_B <= 0;
   end
 
 endmodule // vga
