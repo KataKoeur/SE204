@@ -105,6 +105,7 @@ Seul la partie où l'on doit afficher en parallele de la simulation les images g
 Etape 2 terminée
 
 ## Etape 3 : Controleur de SDRAM
-La première simultion est validé. Les transactions sur le bus wishbone commence 2µs après le lancement du programme (contrairement à 2ms indiqué dans l'énoncé).
+La première simultion est validé. Les transactions sur le bus wishbone commence 2µs après le lancement du programme (contrairement à 2ms indiqué dans l'énoncé). 
 
-Lecture de la SDRAM avec des compteurs indépendant de l'affichage.
+Lecture de la SDRAM avec des compteurs indépendant de l'affichage. 
+Utilisation d'une FIFO comme tampon. 

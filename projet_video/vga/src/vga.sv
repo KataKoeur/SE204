@@ -41,9 +41,43 @@ logic rst;      //signal de reset
 logic blank_pixel;
 logic blank_ligne;
 
+logic rclk;
+logic read;
+logic rdata;
+logic rempty;
+logic wclk;
+logic wdata;
+logic write;
+logic wfull;
+
 //modules
-vga_pll I_vga_pll(.refclk(CLK), .rst(!NRST), .outclk_0(vga_CLK), .locked(locked));
-reset #(.ETAT_ACTIF(1)) I_reset (.CLK(vga_CLK), .NRST(NRST), .n_rst(rst));
+vga_pll I_vga_pll
+(
+  .refclk(CLK),
+  .rst(!NRST),
+  .outclk_0(vga_CLK),
+  .locked(locked)
+);
+
+reset #(.ETAT_ACTIF(1)) I_reset
+(
+  .CLK(vga_CLK),
+  .NRST(NRST),
+  .n_rst(rst)
+);
+
+fifo_async #(.DATA_WIDTH(16), .DEPTH_WIDTH(8)) I_fifo_async
+(
+  .rst(rst),
+  .rclk(rclk),
+  .read(read),
+  .rdata(rdata),
+  .rempty(rempty),
+  .wclk(wclk),
+  .wdata(wdata),
+  .write(write),
+  .wfull(wfull)
+);
 
 //signal de sortie
 assign vga_ifm.VGA_SYNC  = 0;
