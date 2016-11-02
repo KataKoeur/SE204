@@ -46,7 +46,6 @@ logic read;
 logic rdata;
 logic rempty;
 logic wclk;
-logic wdata;
 logic write;
 logic wfull;
 
@@ -70,19 +69,15 @@ reset #(.ETAT_ACTIF(1)) I_reset
 fifo_async #(.DATA_WIDTH(16), .DEPTH_WIDTH(8)) I_fifo_async
 (
   .rst(rst),
-  .rclk(rclk),
+  .rclk(vga_CLK),
   .read(read),
   .rdata(rdata),
   .rempty(rempty),
-  .wclk(wclk),
-  .wdata(wdata),
+  .wclk(wshb_ifm.clk),
+  .wdata(wshb_ifm.dat_sm),
   .write(write),
   .wfull(wfull)
 );
-
-//gestion FIFO
-assign wclk = wshb_ifm.clk;
-assign wdata = wshb_ifm.dat_sm;
 
 //signal de sortie
 assign vga_ifm.VGA_SYNC  = 0;
@@ -97,8 +92,8 @@ assign wshb_ifm.we  = 1'b0; //1 = ecriture et 0 = lecture
 assign wshb_ifm.cti = 0;
 assign wshb_ifm.bte = 0;
 
-//signaux de synchronisation lecture SDRAM
-always @(*)
+//signaux de synchronisation lecture SDRAM (ecriture FIFO)
+always @(posedge wshb_ifm.clk)
 if (rst)
   begin
   CPT_X <= 0;
@@ -106,23 +101,27 @@ if (rst)
   end
 else if(wfull)
   begin
+  write <= 1'b0;
   wshb_ifm.stb <= 1'b0;
   end
-else if(wshb_ifm.ack)
+else
   begin
-  //compteur x
-  write <= 1'b1; //ordre d'écrire dans la fifo
-  wshb_ifm.stb <= 1'b1;
-  CPT_X <= CPT_X + 1'b1;
-  if(CPT_X == vga_HDISP-1)
+  wshb_ifm.stb <= 1'b1; //demande de données à la SDRAM
+  if (wshb_ifm.ack)
     begin
-    CPT_X <= 0;
-    CPT_Y <= CPT_Y + 1'b1; //fin de la ligne, on passe a la suivante
-    end
-  //compteur y
-  if(CPT_Y == vga_VDISP-1)
-    begin
-    CPT_Y <= 0;
+    //compteur x
+    write <= 1'b1; //ordre d'écrire dans la fifo
+    CPT_X <= CPT_X + 1'b1;
+    if(CPT_X == vga_HDISP-1)
+      begin
+      CPT_X <= 0;
+      CPT_Y <= CPT_Y + 1'b1; //fin de la ligne, on passe a la suivante
+      end
+    //compteur y
+    if(CPT_Y == vga_VDISP-1)
+      begin
+      CPT_Y <= 0;
+      end
     end
   end
 
@@ -135,7 +134,7 @@ if(CPT_PIXEL < vga_HDISP && CPT_LIGNE < vga_VDISP)
   vga_ifm.VGA_B <= wshb_ifm.dat_sm[15:11]; //5-bit
   end
 
-//signaux de synchronisation Affichage
+//signaux de synchronisation Affichage (lecture FIFO)
 always @(posedge vga_CLK)
 if (rst)
   begin

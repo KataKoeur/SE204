@@ -109,3 +109,4 @@ La première simultion est validé. Les transactions sur le bus wishbone commenc
 
 Lecture de la SDRAM avec des compteurs indépendant de l'affichage. 
 Utilisation d'une FIFO comme tampon. 
+La FIFO ne se remplit jamais...
