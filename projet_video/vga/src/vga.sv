@@ -44,7 +44,7 @@ logic blank_pixel;
 logic blank_ligne;
 
 //signaux FIFO
-logic rclk, read, rempty, wclk, write, wfull;
+logic rclk, read, rempty, write, wfull;
 logic [vga_DATA_WIDTH-1:0] wdata, rdata;
 logic lecture_done;
 
@@ -94,7 +94,11 @@ assign wshb_ifm.bte = 0;
 
 //ecriture dans la FIFO
 always @(posedge wshb_ifm.clk)
-if(wfull) write <= 1'b0;
+if(wfull)
+  begin
+  write <= 1'b0;
+  lecture_done <= 1'b1;
+  end
 else
   begin
   write <= 1'b1; //ordre d'écrire dans la fifo
@@ -127,12 +131,21 @@ else if(wshb_ifm.ack)
 //décodeur RGB565
 always_comb
 if(lecture_done)
-  if(CPT_PIXEL < vga_HDISP && CPT_LIGNE < vga_VDISP)
+  if(vga_ifm.VGA_BLANK && read)
     begin
     vga_ifm.VGA_R <= rdata[4:0]   << 2; //5-bit
     vga_ifm.VGA_G <= rdata[10:5]  << 3; //6-bit
     vga_ifm.VGA_B <= rdata[15:11] << 2; //5-bit
     end
+
+//lecture de la FIFO
+always @(posedge vga_CLK)
+if(rempty) read <= 1'b0;
+else
+  begin
+  read <= 1'b1; //ordre de lire la fifo
+  wdata <= wshb_ifm.dat_sm;
+  end
 
 //signaux de synchronisation Affichage (lecture FIFO)
 always @(posedge vga_CLK)
