@@ -43,11 +43,13 @@ logic blank_ligne;
 
 logic rclk;
 logic read;
-logic rdata;
+logic [15:0]rdata;
 logic rempty;
 logic wclk;
 logic write;
 logic wfull;
+
+logic lecture_done;
 
 //modules
 vga_pll I_vga_pll
@@ -98,10 +100,12 @@ if (rst)
   begin
   CPT_X <= 0;
   CPT_Y <= 0;
+  lecture_done <= 0;
   end
 else if(wfull)
   begin
   write <= 1'b0;
+  lecture_done <= 1'b1;
   wshb_ifm.stb <= 1'b0;
   end
 else
@@ -127,12 +131,13 @@ else
 
 //décodeur RGB565
 always_comb
-if(CPT_PIXEL < vga_HDISP && CPT_LIGNE < vga_VDISP)
-  begin
-  vga_ifm.VGA_R <= wshb_ifm.dat_sm[4:0];   //5-bit
-  vga_ifm.VGA_G <= wshb_ifm.dat_sm[10:5];  //6-bit
-  vga_ifm.VGA_B <= wshb_ifm.dat_sm[15:11]; //5-bit
-  end
+if(lecture_done)
+  if(CPT_PIXEL < vga_HDISP && CPT_LIGNE < vga_VDISP)
+    begin
+    vga_ifm.VGA_R <= rdata[4:0];   //5-bit
+    vga_ifm.VGA_G <= rdata[10:5];  //6-bit
+    vga_ifm.VGA_B <= rdata[15:11]; //5-bit
+    end
 
 //signaux de synchronisation Affichage (lecture FIFO)
 always @(posedge vga_CLK)
