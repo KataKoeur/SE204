@@ -87,7 +87,6 @@ assign vga_ifm.VGA_BLANK = blank_pixel & blank_ligne;
 assign wshb_ifm.adr = 2*(vga_HDISP*CPT_Y + CPT_X);
 assign wshb_ifm.cyc = 1'b1; //maintenue à 1
 assign wshb_ifm.sel = 2'b11;
-assign wshb_ifm.stb = 1'b1; //demande de données à la SDRAM
 assign wshb_ifm.we  = 1'b0; //1 = ecriture et 0 = lecture
 assign wshb_ifm.cti = 0;
 assign wshb_ifm.bte = 0;
@@ -98,11 +97,13 @@ if(wfull)
   begin
   write <= 1'b0;
   lecture_done <= 1'b1;
+  wshb_ifm.stb <= 1'b0;
   end
 else
   begin
   write <= 1'b1; //ordre d'écrire dans la fifo
   wdata <= wshb_ifm.dat_sm;
+  wshb_ifm.stb <= 1'b1; //demande de données à la SDRAM
   end
 
 //signaux de synchronisation lecture SDRAM (ecriture FIFO)
@@ -133,9 +134,9 @@ always_comb
 if(lecture_done)
   if(vga_ifm.VGA_BLANK && read)
     begin
-    vga_ifm.VGA_R <= rdata[4:0]   << 2; //5-bit
-    vga_ifm.VGA_G <= rdata[10:5]  << 3; //6-bit
-    vga_ifm.VGA_B <= rdata[15:11] << 2; //5-bit
+    vga_ifm.VGA_R <= rdata[4:0]   << 3; //5-bit
+    vga_ifm.VGA_G <= rdata[10:5]  << 2; //6-bit
+    vga_ifm.VGA_B <= rdata[15:11] << 3; //5-bit
     end
 
 //lecture de la FIFO
@@ -162,20 +163,20 @@ else
   begin
   //compteur pixel
   CPT_PIXEL <= CPT_PIXEL + 1'b1;
-  if(CPT_PIXEL == vga_HDISP) blank_pixel <= 0;
-  if(CPT_PIXEL == vga_HDISP + vga_HFP) vga_ifm.VGA_HS <= 0;
-  if(CPT_PIXEL == vga_HDISP + vga_HFP + vga_HPULSE) vga_ifm.VGA_HS <= 1;
-  if(CPT_PIXEL == vga_HDISP + vga_HFP + vga_HPULSE + vga_HBP)
+  if(CPT_PIXEL == vga_HDISP-1) blank_pixel <= 0;
+  if(CPT_PIXEL == vga_HDISP + vga_HFP-1) vga_ifm.VGA_HS <= 0;
+  if(CPT_PIXEL == vga_HDISP + vga_HFP + vga_HPULSE-1) vga_ifm.VGA_HS <= 1;
+  if(CPT_PIXEL == vga_HDISP + vga_HFP + vga_HPULSE + vga_HBP-1)
     begin
     blank_pixel <= 1;
     CPT_PIXEL   <= 0;
     CPT_LIGNE   <= CPT_LIGNE + 1'b1; //fin de la ligne, on passe a la suivante
     end
   //compteur ligne
-  if(CPT_LIGNE == vga_VDISP) blank_ligne <= 0;
-  if(CPT_LIGNE == vga_VDISP + vga_VFP) vga_ifm.VGA_VS <= 0;
-  if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE) vga_ifm.VGA_VS <= 1;
-  if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE + vga_VBP)
+  if(CPT_LIGNE == vga_VDISP-1) blank_ligne <= 0;
+  if(CPT_LIGNE == vga_VDISP + vga_VFP-1) vga_ifm.VGA_VS <= 0;
+  if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE-1) vga_ifm.VGA_VS <= 1;
+  if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE + vga_VBP-1)
     begin
     blank_ligne <= 1;
     CPT_LIGNE   <= 0;

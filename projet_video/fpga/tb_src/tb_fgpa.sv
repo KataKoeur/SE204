@@ -66,8 +66,8 @@ NRST    = 1'b0;
 NRST= 1'b1;
 SW1 = 1'b1; //activation de CLK_AUX
 
-//#10ms // 2-3 images
-#50ms	// 10-15 images
+#10ms // 2-3 images
+//#50ms	// 10-15 images
 $display("Fin de la simulation");
 $finish;
 end
