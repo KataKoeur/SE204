@@ -92,28 +92,23 @@ assign wshb_ifm.cti = 0;
 assign wshb_ifm.bte = 0;
 
 //ecriture dans la FIFO
-always @(posedge wshb_ifm.clk)
-if(wfull)
-  begin
-  write <= 1'b0;
-  lecture_done <= 1'b1;
-  wshb_ifm.stb <= 1'b0;
-  end
-else
-  begin
-  write <= 1'b1; //ordre d'écrire dans la fifo
-  wdata <= wshb_ifm.dat_sm;
-  wshb_ifm.stb <= 1'b1; //demande de données à la SDRAM
-  end
+assign write = (wshb_ifm.ack);  //ordre d'écrire dans la fifo
+assign wshb_ifm.stb = (!wfull); //demande de données à la SDRAM
+assign wdata = wshb_ifm.dat_sm;
+
+//premiere lecture dans la fifo autorisé
+always_comb
+if(rst)                                     lecture_done <= 1'b0;
+else if (wfull && !CPT_LIGNE && !CPT_PIXEL) lecture_done <= 1'b1;
 
 //signaux de synchronisation lecture SDRAM (ecriture FIFO)
-always @(posedge wshb_ifm.ack or posedge rst)
+always @(posedge wshb_ifm.clk or posedge rst)
 if (rst)
   begin
   CPT_X <= 0;
   CPT_Y <= 0;
   end
-else
+else if(wshb_ifm.ack)
   begin
   //compteur x
   CPT_X <= CPT_X + 1'b1;
@@ -132,21 +127,15 @@ else
 //décodeur RGB565
 always_comb
 if(lecture_done)
-  if(vga_ifm.VGA_BLANK && read)
+  if(vga_ifm.VGA_BLANK)
     begin
-    vga_ifm.VGA_R <= rdata[4:0]   << 3; //5-bit
+    vga_ifm.VGA_B <= rdata[4:0]   << 3; //5-bit
     vga_ifm.VGA_G <= rdata[10:5]  << 2; //6-bit
-    vga_ifm.VGA_B <= rdata[15:11] << 3; //5-bit
+    vga_ifm.VGA_R <= rdata[15:11] << 3; //5-bit
     end
 
 //lecture de la FIFO
-always @(posedge vga_CLK)
-if(rempty) read <= 1'b0;
-else
-  begin
-  read <= 1'b1; //ordre de lire la fifo
-  wdata <= wshb_ifm.dat_sm;
-  end
+assign read = lecture_done && !rempty && vga_ifm.VGA_BLANK;
 
 //signaux de synchronisation Affichage (lecture FIFO)
 always @(posedge vga_CLK)
@@ -179,6 +168,7 @@ else
   if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE + vga_VBP-1)
     begin
     blank_ligne <= 1;
+    CPT_PIXEL   <= 0;
     CPT_LIGNE   <= 0;
     end
   end
