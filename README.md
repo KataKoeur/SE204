@@ -115,3 +115,4 @@ L'affichage du damier via la carte fonctionne très bien.
 
 ## Étape 4 : Un véritable bus avec un arbitre
 Ajout d'un module mire.
+Ajout d'un module wshb_intercon
