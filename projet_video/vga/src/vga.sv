@@ -11,6 +11,7 @@ module vga (
 parameter  vga_HDISP = 640;
 parameter  vga_VDISP = 480;
 
+
 localparam  vga_Fpix   = 25.17;
 localparam  vga_Fdisp  = 60;
 localparam  vga_HFP    = 16;
@@ -81,7 +82,6 @@ fifo_async #(.DATA_WIDTH(vga_DATA_WIDTH), .DEPTH_WIDTH(8)) I_fifo_async
 //signal de sortie
 assign vga_ifm.VGA_SYNC  = 0;
 assign vga_ifm.VGA_CLK   = !vga_CLK;
-assign vga_ifm.VGA_BLANK = blank_pixel & blank_ligne;
 
 //lecture en SDRAM (controleur)
 assign wshb_ifm.adr = 2*(vga_HDISP*CPT_Y + CPT_X);
@@ -96,10 +96,18 @@ assign write = (wshb_ifm.ack);  //ordre d'écrire dans la fifo
 assign wshb_ifm.stb = (!wfull); //demande de données à la SDRAM
 assign wdata = wshb_ifm.dat_sm;
 
+//lecture de la FIFO
+assign read = lecture_done && !rempty && vga_ifm.VGA_BLANK;
+
 //premiere lecture dans la fifo autorisé
-always_comb
-if(rst)                                     lecture_done <= 1'b0;
-else if (wfull && !CPT_LIGNE && !CPT_PIXEL) lecture_done <= 1'b1;
+always @(posedge wshb_ifm.clk)
+if(rst)                                     lecture_done = 1'b0;
+else if (wfull && !CPT_LIGNE && !CPT_PIXEL) lecture_done = 1'b1;
+
+//décodeur RGB565
+assign vga_ifm.VGA_B = rdata[4:0]   << 3; //5-bit
+assign vga_ifm.VGA_G = rdata[10:5]  << 2; //6-bit
+assign vga_ifm.VGA_R = rdata[15:11] << 3; //5-bit
 
 //signaux de synchronisation lecture SDRAM (ecriture FIFO)
 always @(posedge wshb_ifm.clk or posedge rst)
@@ -124,20 +132,9 @@ else if(wshb_ifm.ack)
     end
   end
 
-//décodeur RGB565
-always_comb
-if(lecture_done)
-  if(vga_ifm.VGA_BLANK)
-    begin
-    vga_ifm.VGA_B <= rdata[4:0]   << 3; //5-bit
-    vga_ifm.VGA_G <= rdata[10:5]  << 2; //6-bit
-    vga_ifm.VGA_R <= rdata[15:11] << 3; //5-bit
-    end
-
-//lecture de la FIFO
-assign read = lecture_done && !rempty && vga_ifm.VGA_BLANK;
-
 //signaux de synchronisation Affichage (lecture FIFO)
+assign vga_ifm.VGA_BLANK = blank_pixel & blank_ligne;
+
 always @(posedge vga_CLK)
 if (rst)
   begin
