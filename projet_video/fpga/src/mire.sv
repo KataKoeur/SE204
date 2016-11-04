@@ -23,7 +23,6 @@ assign wshb_if_mire.sel = 2'b11;
 assign wshb_if_mire.we  = 1'b1; //1 = ecriture et 0 = lecture
 assign wshb_if_mire.cti = 0;
 assign wshb_if_mire.bte = 0;
-assign wshb_if_mire.dat_ms = 0;
 
 //fair-play
 always @(posedge wshb_if_mire.clk or posedge wshb_if_mire.rst)

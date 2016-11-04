@@ -31,17 +31,20 @@ always @(*) begin
   case (state)
     IDLE :
       begin
-      n_state = state;
+      n_state = priorite_MIRE;
       end
 
     priorite_MIRE :
       begin
-      n_state = state;
+      if(!wshb_if_mire.stb)       n_state = priorite_VGA;
+      else if(!wshb_if_mire.cyc)  n_state = priorite_VGA;
+      else if(wshb_if_vga.stb)    n_state = priorite_VGA;
       end
 
     priorite_VGA :
       begin
-      n_state = state;
+      if(!wshb_if_vga.cyc) n_state = priorite_MIRE;
+      else if(!wshb_if_vga.stb) n_state = priorite_MIRE;
       end
 
     default :
