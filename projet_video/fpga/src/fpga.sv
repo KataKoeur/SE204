@@ -50,23 +50,10 @@ wshb_if #(.DATA_BYTES(2)) wshb_if_mire (.clk(wshb_clk), .rst(wshb_rst));
 wshb_if #(.DATA_BYTES(2)) wshb_if_vga  (.clk(wshb_clk), .rst(wshb_rst));
 wshb_if #(.DATA_BYTES(2)) wshb_if_0    (.clk(wshb_clk), .rst(wshb_rst));
 
-// Instanciation du controleur de sdram
-wb16_sdram16 u_sdram_ctrl
+// --------------------------modules--------------------------
+mire I_mire
 (
-  // Wishbone 16 bits slave interface
-  .wb_s(wshb_if_0.slave),
-  // SDRAM master interface
-  .sdram_m(sdram_ifm),
-  // SDRAM clock
-  .sdram_clk(sdram_clk)
-);
-
-//modules
-reset I_reset_fpga
-(
-	.CLK(fpga_CLK),
-	.NRST(fpga_NRST),
-	.n_rst(n_rst)
+	.wshb_if_mire(wshb_if_mire.master)
 );
 
 vga #(.vga_HDISP(HDISP), .vga_VDISP(VDISP)) I_vga
@@ -74,7 +61,22 @@ vga #(.vga_HDISP(HDISP), .vga_VDISP(VDISP)) I_vga
 	.CLK(fpga_CLK_AUX),
 	.NRST(fpga_NRST),
 	.vga_ifm(vga_ifm),
-	.wshb_ifm(wshb_if_0)
+	.wshb_ifm(wshb_if_vga.master)
+);
+
+wshb_intercon I_wshb_intercon
+(
+	.wshb_if_mire(wshb_if_mire.slave),
+	.wshb_if_vga(wshb_if_vga.slave),
+	.wshb_if_0(wshb_if_0.master)
+);
+
+// Instanciation du controleur de sdram
+wb16_sdram16 u_sdram_ctrl
+(
+  .wb_s(wshb_if_0.slave), // Wishbone 16 bits slave interface
+  .sdram_m(sdram_ifm),		// SDRAM master interface
+	.sdram_clk(sdram_clk)		// SDRAM clock
 );
 
 wshb_pll pll
@@ -86,12 +88,10 @@ wshb_pll pll
 	.locked(locked)
 );
 
-reset #(.ETAT_ACTIF(1)) I_reset_wshb
-(
-	.CLK(wshb_clk),
-  .NRST(fpga_NRST),
-  .n_rst(wshb_rst)
-);
+// synchronisation des resets
+reset #(.ETAT_ACTIF(0)) I_reset_fpga (.CLK(fpga_CLK), .NRST(fpga_NRST), .n_rst(n_rst));
+reset #(.ETAT_ACTIF(1)) I_reset_wshb (.CLK(wshb_clk), .NRST(fpga_NRST), .n_rst(wshb_rst));
+
 
 // Assignation des switchs
 assign fpga_LEDR0 = fpga_SW0;
