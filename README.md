@@ -90,24 +90,24 @@ Le système sera composé des éléments suivants :
 	Un décodeur vidéo logiciel, fonctionnant sur le HPS et écrivant les images dans la SDRAM à travers le FPGA.
 	Un arbitre permettant de partager l'accès à la SDRAM entre le contrôleur vidéo et  le décodeur vidéo.
 
-## Etape 1 : Squelette
-
-Module fpga avec 2 CLK, 2 switch, 1 reset et 4 LED
-Le testbench permet de tout tester automatiquement. Le module fpga à passé les testes avec succes.
-La synthès compile sans erreur mais releve plusieur Warning : Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
-Il ne sont néamoins pas important.
+## Étape 1 : Squelette
+Module fpg a avec 2 CLK, 2 switchs, 1 reset et 4 LED
+Le testbench permet de tout tester automatiquement. Le module fpg a à passer les testes avec succès.
+La synthès compile sans erreur mais releve plusieurs Warning : Warning (18236): Number of processors has not been spécifie which mais causé overloading on shared machines. Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF To an appropriate value for best performance.
+Ils ne sont néanmoins pas importants.
 Le test sur maquette est un succès. Tout réagis comme il faut.
-Etape 1 terminée
+Étape 1 terminée
 
-## Etape 2 : Controleur vidéo VGA
-Tout fonctionne sans problème sur la carte fpga. J'affiche sur l'écran d'ordinateur une mire qui evolue dans le temps.
-Seul la partie où l'on doit afficher en parallele de la simulation les images généré n'a pas aboutie.
-Etape 2 terminée
+## Étape 2 : Controleur vidéo VGA
+Tout fonctionne sans problème sur la carte fpg a. J'affiche sur l'écran d'ordinateur une mire qui évolue dans le temps.
+Seul la partie où l'on doit afficher en parallèle de la simulation les images générées n'a pas abouti.
+Étape 2 terminée
 
-## Etape 3 : Controleur de SDRAM
-La première simultion est validé. Les transactions sur le bus wishbone commence 2µs après le lancement du programme (contrairement à 2ms indiqué dans l'énoncé). 
-
-Lecture de la SDRAM avec des compteurs indépendant de l'affichage. 
-Utilisation d'une FIFO comme tampon. 
-La FIFO se remplis plus vite qu'elle ne se vide. Les compteurs lisant la SDRAM s'incrémente à chaque ACK.
-Affichage du dammier coloré comme convenue.
+## Étape 3 : Controleur de SDRAM
+La première simulation est validée. Les transactions sur le bus wishbone commencent 2 µs après le lancement du programme (contrairement à 2 ms indiqués dans l'énoncé).
+Lecture de la SDRAM avec des compteurs indépendants de l'affichage.
+Utilisation d'une FIFO comme tampon.
+La FIFO se remplit plus vite qu'elle ne se vide. Les compteurs lisant la SDRAM s'incrémente à chacun ACK.
+Affichage du damier coloré comme convenu.
+La synthèse aboutie avec quelque warning. Il faut bien penser à faire "make load sdram" avant d'implémenter le programme dans la carte.
+L'affichage du damier via la carte fonctionne très bien à l'exception que le damier bouge ! Il défile verticalement.
