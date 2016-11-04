@@ -112,3 +112,6 @@ Affichage du damier coloré comme convenu.
 La synthèse aboutie avec quelque warning. Il faut bien penser à faire "make load sdram" avant d'implémenter le programme dans la carte.
 L'affichage du damier via la carte fonctionne très bien.
 Étape 3 terminée
+
+## Étape 4 : Un véritable bus avec un arbitre
+Ajout d'un module mire.
