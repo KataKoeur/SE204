@@ -80,8 +80,8 @@ fifo_async #(.DATA_WIDTH(vga_DATA_WIDTH), .DEPTH_WIDTH(8)) I_fifo_async
 );
 
 //signal de sortie
-assign vga_ifm.VGA_SYNC  = 0;
-assign vga_ifm.VGA_CLK   = !vga_CLK;
+assign vga_ifm.VGA_SYNC = 0;
+assign vga_ifm.VGA_CLK  = !vga_CLK;
 
 //lecture en SDRAM (controleur)
 assign wshb_ifm.adr = 2*(vga_HDISP*CPT_Y + CPT_X);
@@ -124,12 +124,12 @@ else if(wshb_ifm.ack)
   if(CPT_X == vga_HDISP-1)
     begin
     CPT_X <= 0;
+    //compteur y
     CPT_Y <= CPT_Y + 1'b1; //fin de la ligne, on passe a la suivante
-    end
-  //compteur y
-  if(CPT_Y == vga_VDISP-1)
-    begin
-    CPT_Y <= 0;
+    if(CPT_Y == vga_VDISP-1)
+      begin
+      CPT_Y <= 0;
+      end
     end
   end
 

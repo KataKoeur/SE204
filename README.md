@@ -110,4 +110,5 @@ Utilisation d'une FIFO comme tampon.
 La FIFO se remplit plus vite qu'elle ne se vide. Les compteurs lisant la SDRAM s'incrémente à chacun ACK.
 Affichage du damier coloré comme convenu.
 La synthèse aboutie avec quelque warning. Il faut bien penser à faire "make load sdram" avant d'implémenter le programme dans la carte.
-L'affichage du damier via la carte fonctionne très bien à l'exception que le damier bouge ! Il défile verticalement.
+L'affichage du damier via la carte fonctionne très bien.
+Étape 3 terminée
