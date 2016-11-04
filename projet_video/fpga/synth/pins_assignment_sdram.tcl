@@ -4,8 +4,8 @@
 
 # Paramètres électriques des ports
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL"  -to sdram_ifm.*
-#set_instance_assignment -name CURRENT_STRENGTH_NEW "8MA" -to sdram_ifm.*
-#set_instance_assignment -name SLEW_RATE 1 -to  sdram_ifm.*
+set_instance_assignment -name CURRENT_STRENGTH_NEW "8MA" -to sdram_ifm.*
+set_instance_assignment -name SLEW_RATE 1 -to  sdram_ifm.*
 
 # Positions des pins
 set_location_assignment PIN_AH12 -to sdram_ifm.clk

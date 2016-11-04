@@ -101,9 +101,9 @@ assign wdata = wshb_ifm.dat_sm;
 assign read = lecture_done && !rempty && vga_ifm.VGA_BLANK;
 
 //premiere lecture dans la fifo autorisé
-always @(posedge wshb_ifm.clk)
-if(rst)                                     lecture_done = 1'b0;
-else if (wfull && !CPT_LIGNE && !CPT_PIXEL) lecture_done = 1'b1;
+always @(posedge wshb_ifm.clk or posedge rst)
+if(rst)                                     lecture_done <= 1'b0;
+else if (wfull && !CPT_LIGNE && !CPT_PIXEL) lecture_done <= 1'b1;
 
 //décodeur RGB565
 assign vga_ifm.VGA_B = rdata[4:0]   << 3; //5-bit
@@ -136,7 +136,7 @@ else if(wshb_ifm.ack)
 //signaux de synchronisation Affichage (lecture FIFO)
 assign vga_ifm.VGA_BLANK = blank_pixel & blank_ligne;
 
-always @(posedge vga_CLK)
+always @(posedge vga_CLK or posedge rst)
 if (rst)
   begin
   CPT_PIXEL <= 0;
