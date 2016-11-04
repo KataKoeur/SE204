@@ -110,4 +110,4 @@ La première simultion est validé. Les transactions sur le bus wishbone commenc
 Lecture de la SDRAM avec des compteurs indépendant de l'affichage. 
 Utilisation d'une FIFO comme tampon. 
 La FIFO se remplis plus vite qu'elle ne se vide. Les compteurs lisant la SDRAM s'incrémente à chaque ACK.
-Affichage d'un zebre multicolore.
+Affichage du dammier coloré comme convenue.

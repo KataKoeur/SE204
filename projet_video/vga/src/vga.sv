@@ -90,6 +90,7 @@ assign wshb_ifm.sel = 2'b11;
 assign wshb_ifm.we  = 1'b0; //1 = ecriture et 0 = lecture
 assign wshb_ifm.cti = 0;
 assign wshb_ifm.bte = 0;
+assign wshb_ifm.dat_ms = 0;
 
 //ecriture dans la FIFO
 assign write = (wshb_ifm.ack);  //ordre d'écrire dans la fifo
@@ -155,18 +156,17 @@ else
   if(CPT_PIXEL == vga_HDISP + vga_HFP + vga_HPULSE + vga_HBP-1)
     begin
     blank_pixel <= 1;
-    CPT_PIXEL   <= 0;
-    CPT_LIGNE   <= CPT_LIGNE + 1'b1; //fin de la ligne, on passe a la suivante
-    end
-  //compteur ligne
-  if(CPT_LIGNE == vga_VDISP-1) blank_ligne <= 0;
-  if(CPT_LIGNE == vga_VDISP + vga_VFP-1) vga_ifm.VGA_VS <= 0;
-  if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE-1) vga_ifm.VGA_VS <= 1;
-  if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE + vga_VBP-1)
-    begin
-    blank_ligne <= 1;
-    CPT_PIXEL   <= 0;
-    CPT_LIGNE   <= 0;
+    CPT_PIXEL   <= 0; //fin de la ligne, on passe a la suivante
+    //compteur ligne
+    CPT_LIGNE   <= CPT_LIGNE + 1'b1;
+    if(CPT_LIGNE == vga_VDISP-1) blank_ligne <= 0;
+    if(CPT_LIGNE == vga_VDISP + vga_VFP-1) vga_ifm.VGA_VS <= 0;
+    if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE-1) vga_ifm.VGA_VS <= 1;
+    if(CPT_LIGNE == vga_VDISP + vga_VFP + vga_VPULSE + vga_VBP-1)
+      begin
+      blank_ligne <= 1;
+      CPT_LIGNE   <= 0;
+      end
     end
   end
 
