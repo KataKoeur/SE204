@@ -62,6 +62,7 @@ always @(*) begin
       wshb_if_0.sel = 2'b11;
       wshb_if_0.cti = 0;
       wshb_if_0.bte = 0;
+      wshb_if_0.stb = 0;
       end
 
     priorite_MIRE :
@@ -77,6 +78,7 @@ always @(*) begin
       wshb_if_0.sel = wshb_if_mire.sel;
       wshb_if_0.cti = wshb_if_mire.cti;
       wshb_if_0.bte = wshb_if_mire.bte;
+      wshb_if_0.stb = wshb_if_mire.stb;
       end
 
     priorite_VGA :
@@ -92,6 +94,7 @@ always @(*) begin
       wshb_if_0.sel = wshb_if_vga.sel;
       wshb_if_0.cti = wshb_if_vga.cti;
       wshb_if_0.bte = wshb_if_vga.bte;
+      wshb_if_0.stb = wshb_if_vga.stb;
       end
 
     default :

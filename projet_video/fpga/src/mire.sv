@@ -47,7 +47,7 @@ if (wshb_if_mire.rst)
   CPT_X <= 0;
   CPT_Y <= 0;
   end
-else
+else if(wshb_if_mire.ack)
   begin
   //compteur x
   CPT_X <= CPT_X + 1'b1;
