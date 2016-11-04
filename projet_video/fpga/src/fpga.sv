@@ -51,7 +51,7 @@ wshb_if #(.DATA_BYTES(2)) wshb_if_vga  (.clk(wshb_clk), .rst(wshb_rst));
 wshb_if #(.DATA_BYTES(2)) wshb_if_0    (.clk(wshb_clk), .rst(wshb_rst));
 
 // --------------------------modules--------------------------
-mire I_mire
+mire #(.HDISP(HDISP), .VDISP(VDISP)) I_mire
 (
 	.wshb_if_mire(wshb_if_mire.master)
 );
