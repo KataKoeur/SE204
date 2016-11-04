@@ -26,11 +26,11 @@ assign wshb_if_mire.bte = 0;
 
 //fair-play
 always @(posedge wshb_if_mire.clk or posedge wshb_if_mire.rst)
-if(wshb_if_mire.rst)  fair_play <= 0;
+if(wshb_if_mire.rst)  fair_play <= 1'b0;
 else
   begin
   fair_play <= fair_play + 1'b1;
-  if(fair_play == 64) fair_play <= 0;
+  if(fair_play == 64) fair_play <= 1'b0;
   end
 
 //Génération d'une mire
