@@ -16,8 +16,8 @@ logic [CPT_Y_W-1:0]CPT_Y; //compteur de ligne dans une image
 logic [5:0]fair_play; //compte de 0 à 63
 
 assign wshb_if_mire.adr = 2*(HDISP*CPT_Y + CPT_X);
-assign wshb_if_mire.stb = (fair_play);
-assign wshb_if_mire.cyc = (fair_play);
+assign wshb_if_mire.stb = (fair_play == 0);
+assign wshb_if_mire.cyc = (fair_play == 0);
 
 assign wshb_if_mire.sel = 2'b11;
 assign wshb_if_mire.we  = 1'b1; //1 = ecriture et 0 = lecture
