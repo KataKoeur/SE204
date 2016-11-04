@@ -85,7 +85,7 @@ assign vga_ifm.VGA_CLK  = !vga_CLK;
 
 //lecture en SDRAM (controleur)
 assign wshb_ifm.adr = 2*(vga_HDISP*CPT_Y + CPT_X);
-assign wshb_ifm.cyc = 1'b1; //maintenue à 1
+assign wshb_ifm.cyc = wshb_ifm.stb; //fair-play
 assign wshb_ifm.sel = 2'b11;
 assign wshb_ifm.we  = 1'b0; //1 = ecriture et 0 = lecture
 assign wshb_ifm.cti = 0;
