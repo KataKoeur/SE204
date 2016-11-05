@@ -117,6 +117,7 @@ L'affichage du damier via la carte fonctionne très bien.
 Ajout d'un module mire. 
 Ajout d'un module wshb_intercon. 
 Interfacage entre l'ensemble des modules réussis. 
-La mire généré fonctionne mais comprend quelques artefactes. De plus, des erreurs sont affichées dans la console:
+La mire généré fonctionne. Néanmoins, des erreurs sont affichées dans la console:
 # tb_fpga.SDRAM : at time 7135737.0 ns ERROR: Bank already activated -- data can be corrupted
-
+De plus, l'affichage de la mire à l'écran comporte quelques artéfactes qui surviennent de temps à autre. 
+Étape terminée. 

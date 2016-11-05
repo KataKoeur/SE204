@@ -11,7 +11,7 @@ wire rst = wshb_if_0.rst;
 assign wshb_if_0.dat_ms = wshb_if_mire.dat_ms; //la mire ecrit dans la sdram
 assign wshb_if_vga.dat_sm = wshb_if_0.dat_sm;  //le vga lit la sdram
 
-typedef enum {IDLE, priorite_MIRE, priorite_VGA} state_t;
+typedef enum {IDLE, MIRE_ACCESS, VGA_ACCESS} state_t;
 state_t state, n_state;
 
 //changement d'état cadencé par clk
@@ -25,18 +25,18 @@ always @(*) begin
   case (state)
     IDLE :
       begin
-      n_state = priorite_MIRE;
+      n_state = MIRE_ACCESS;
       end
 
-    priorite_MIRE :
+    MIRE_ACCESS :
       begin
-      if(!wshb_if_mire.cyc)     n_state = priorite_VGA; //donne la main au vga
-      else if(wshb_if_vga.cyc)  n_state = priorite_VGA; //vga impose la main
+      if(!wshb_if_mire.cyc)     n_state = VGA_ACCESS; //donne la main au vga
+      else if(wshb_if_vga.cyc)  n_state = VGA_ACCESS; //vga impose la main
       end
 
-    priorite_VGA :
+    VGA_ACCESS :
       begin
-      if(!wshb_if_vga.cyc) n_state = priorite_MIRE; //donne la main à la mire
+      if(!wshb_if_vga.cyc) n_state = MIRE_ACCESS; //donne la main à la mire
       end
 
     default :
@@ -65,7 +65,7 @@ always @(*) begin
       wshb_if_0.stb = 0;
       end
 
-    priorite_MIRE :
+    MIRE_ACCESS :
       begin
       //mire
       wshb_if_mire.ack <= wshb_if_0.ack;
@@ -81,7 +81,7 @@ always @(*) begin
       wshb_if_0.stb = wshb_if_mire.stb;
       end
 
-    priorite_VGA :
+    VGA_ACCESS :
       begin
       //mire
       wshb_if_mire.ack <= 1'b0;

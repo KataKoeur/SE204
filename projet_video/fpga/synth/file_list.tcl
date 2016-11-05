@@ -15,3 +15,6 @@ set_global_assignment -name SYSTEMVERILOG_FILE ${TOPDIR}/wb16_sdram16/src/xess_s
 set_global_assignment -name SYSTEMVERILOG_FILE ${TOPDIR}/wb16_sdram16/src/wb_bridge_xess.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ${TOPDIR}/wb16_sdram16/src/wb16_sdram16.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ${TOPDIR}/fifo_async/src/fifo_async.sv
+
+set_global_assignment -name SYSTEMVERILOG_FILE ${TOPDIR}/fpga/src/wshb_intercon.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ${TOPDIR}/fpga/src/mire.sv
