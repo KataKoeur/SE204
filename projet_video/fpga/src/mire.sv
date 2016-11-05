@@ -34,11 +34,15 @@ else
   end
 
 //Génération d'une mire
+assign wshb_if_mire.dat_ms = (CPT_X %16 == 0 || CPT_Y %16 == 0)? 16'hFFFF : 16'h0000;
+
+/*
 always @(posedge wshb_if_mire.clk)
 if(CPT_X %16 == 0 || CPT_Y %16 == 0) //ligne ou colone blanche
   wshb_if_mire.dat_ms <= 16'hFFFF;
 else
   wshb_if_mire.dat_ms <= 16'h0000;
+*/
 
 //signaux de synchronisation de la mire
 always @(posedge wshb_if_mire.clk or posedge wshb_if_mire.rst)

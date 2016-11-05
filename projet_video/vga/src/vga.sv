@@ -90,7 +90,7 @@ assign wshb_ifm.sel = 2'b11;
 assign wshb_ifm.we  = 1'b0; //1 = ecriture et 0 = lecture
 assign wshb_ifm.cti = 0;
 assign wshb_ifm.bte = 0;
-assign wshb_ifm.dat_ms = 0;
+//assign wshb_ifm.dat_ms = 0;
 
 //ecriture dans la FIFO
 assign write = (wshb_ifm.ack);  //ordre d'écrire dans la fifo
