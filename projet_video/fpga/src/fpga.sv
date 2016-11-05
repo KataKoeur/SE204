@@ -49,14 +49,15 @@ logic sdram_clk;
 logic locked ;
 
 // Instanciation de plusieurs bus Wishbone 16 bits
-hps_block hps0(.wshb_ifm(wshb_if_mire),.*);
+wshb_if #(.DATA_BYTES(2)) wshb_if_mire (.clk(wshb_clk), .rst(wshb_rst));
 wshb_if #(.DATA_BYTES(2)) wshb_if_vga  (.clk(wshb_clk), .rst(wshb_rst));
 wshb_if #(.DATA_BYTES(2)) wshb_if_0    (.clk(wshb_clk), .rst(wshb_rst));
 
 // --------------------------modules--------------------------
-mire #(.HDISP(HDISP), .VDISP(VDISP)) I_mire
+hps_block hps0
 (
-	.wshb_if_mire(wshb_if_mire.master)
+	.wshb_ifm(wshb_if_mire),
+	.*
 );
 
 vga #(.vga_HDISP(HDISP), .vga_VDISP(VDISP)) I_vga
