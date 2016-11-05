@@ -56,3 +56,6 @@ source pins_assignment_vga.tcl
 
 # La sdram
 source pins_assignment_sdram.tcl
+
+# Le HPS
+source pins_assignment_hps.tcl

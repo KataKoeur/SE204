@@ -31,7 +31,7 @@ if [info exists env(make_assignment)] {
 set fast_compile 0
 
 # On utilise les processeurs ARM... ou non
-set enable_hps 0
+set enable_hps 1
 if {$enable_hps} {
 	set_global_assignment -name VERILOG_MACRO "ENABLE_HPS"
 }
