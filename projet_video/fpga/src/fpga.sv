@@ -56,7 +56,7 @@ wshb_if #(.DATA_BYTES(2)) wshb_if_0    (.clk(wshb_clk), .rst(wshb_rst));
 // --------------------------modules--------------------------
 hps_block hps0
 (
-	.wshb_ifm(wshb_if_mire),
+	.wshb_ifm(wshb_if_mire.master),
 	.*
 );
 
